@@ -1,3 +1,3 @@
-// require('./examples/helloWorld/index');
-require('./examples/basicLayout/index');
-// require('./examples/origin/index');
+// module.exports = require('./examples/helloWorld/index');
+module.exports = require('./examples/basicLayout/index');
+// module.exports = require('./examples/origin/index');

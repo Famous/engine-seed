@@ -5,3 +5,5 @@ var Colors = require('./Colors');
 
 var famous = new Clock();
 famous.publish(new Colors(), 'body');
+
+module.exports = famous;
