@@ -48,6 +48,7 @@
     "famous-webgl-renderers": "git+ssh://git@github.famo.us/platform/webgl-renderers#master",
     "famous-webgl-geometries": "git+ssh://git@github.famo.us/platform/webgl-geometries#master",
     "famous-webgl-materials": "git+ssh://git@github.famo.us/platform/webgl-materials#master",
-    "famous-handlers": "git+ssh://git@github.famo.us/platform/handlers#master"
+    "famous-handlers": "git+ssh://git@github.famo.us/platform/handlers#master",
+    "famous-webgl-shaders": "git+ssh://git@github.famo.us/platform/webgl-shaders#master"
   }
 }
