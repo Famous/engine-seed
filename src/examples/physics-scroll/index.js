@@ -3,7 +3,7 @@
 var Clock = require('famous-core').Clock;
 
 var UIEvents = require('famous-handlers').UIEvents;
-var DOMElement = require('famous-dom-renderables').DOMElement;
+var HTMLElement = require('famous-dom-renderables').HTMLElement;
 var components = require('famous-components');
 var Position = components.Position;
 var Rotation = components.Rotation;
@@ -22,14 +22,14 @@ var world = new PhysicsEngine({
 });
 
 function WorldView(dispatch, model) {
-    this.el = new DOMElement(dispatch);
+    this.el = new HTMLElement(dispatch);
 }
 WorldView.prototype.tick = function() {
     world.update(Date.now());
 };
 var impulse = new math.Vec3();
 WorldView.prototype.wheel = function(ev) {
-    impulse.set(ev.deltaY*ghost.mass/100, -ev.deltaX*ghost.mass/100, 0);
+    impulse.set(ev.deltaY*ghost.mass/50, -ev.deltaX*ghost.mass/50, 0);
     ghost.applyAngularImpulse(impulse);
 };
 WorldView.handlers = [UIEvents([
@@ -57,7 +57,7 @@ function BoxView(dispatch, model) {
     this.origin.set(0.5,0.5,0.5);
     this.mountPoint.set(0.5,0.5,0.5);
 
-    this.el = new DOMElement(dispatch);
+    this.el = new HTMLElement(dispatch);
     this.el.property('background', model.color);
     this.el.property('color', 'white');
     this.el.property('textAlign', 'center');
@@ -91,13 +91,13 @@ ghost.color = 'black'
 
 world.add(ghost);
 
-var radius = 400;
+var radius = 2500;
 ghost.setPosition(0,0,-radius);
 
 var blades = [];
 var springs = [];
 var forces = [];
-var num = 100;
+var num = 500;
 var span = 20;
 
 var qs = [];
