@@ -2,7 +2,7 @@
   "name": "famous-seed",
   "version": "0.1.0",
   "description": "seed for a browserified version of famous",
-  "browser": "src/index.js",
+  "browser": "src/worker.js",
   "scripts": {
     "build-main": "browserify src/main.js -t [ babelify --playground --experimental ] | uglifyjs > public/main.bundle.js",
     "build-worker": "browserify src/worker.js -t [ babelify --playground --experimental ]| uglifyjs > public/main.bundle.js",
