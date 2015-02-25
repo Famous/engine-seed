@@ -21,3 +21,5 @@ for (var r = 0; r < columns; r++) {
 var famous = new Clock();
 
 famous.publish(scene, 'body');
+
+module.exports = famous;
