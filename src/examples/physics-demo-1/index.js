@@ -17,7 +17,7 @@ var physics = require('famous-physics');
 
 var PhysicsEngine = physics.PhysicsEngine;
 
-var world = new PhysicsEngine();
+var world = new PhysicsEngine({iterations: 2});
 // Tell famous how to render objects from the 'bodies' array of instances of PhysicsEngine
 PhysicsEngine.publish = 'bodies';
 PhysicsEngine.renderWith = WorldView;
@@ -59,14 +59,14 @@ WorldView.subscribe = {tick : ['*']};
 // Tell famous how to render instances of Box
 physics.Box.renderWith = BoxView;
 var box = new physics.Box({
-    size: [300,200,100],
+    size: [300,200,150],
     mass: 10,
     restrictions: ['z'],
     position: new math.Vec3(300,300,0)
 });
 
 var box2 = new physics.Box({
-    size: [400,200,50],
+    size: [400,200,150],
     mass: 10,
     restrictions: ['z'],
     position: new math.Vec3(800,500,0)
