@@ -41,7 +41,7 @@ WorldView.prototype.mousemove = function(e) {
 
 // See below
 WorldView.prototype.mouseup = function() {
-    world.add(spring, rspring);
+    world.add(spring);
     world.remove(p2p);
     p2p = null;
 }
@@ -61,12 +61,35 @@ physics.Box.renderWith = BoxView;
 var box = new physics.Box({
     size: [300,200,100],
     mass: 10,
+    restrictions: ['z'],
     position: new math.Vec3(300,300,0)
 });
 
+var box2 = new physics.Box({
+    size: [400,200,50],
+    mass: 10,
+    restrictions: ['z'],
+    position: new math.Vec3(800,500,0)
+});
+
+var wall1 = new physics.Wall({direction: physics.Wall.RIGHT});
+var wall2 = new physics.Wall({direction: physics.Wall.DOWN});
+var wall3 = new physics.Wall({direction: physics.Wall.LEFT});
+var wall4 = new physics.Wall({direction: physics.Wall.UP});
+
+wall3.setPosition(1400,0,0);
+wall4.setPosition(0,750,0);
+
+var hinge = new physics.Hinge(box, box2, {
+    anchor : math.Vec3.add(box.position, box2.position, new math.Vec3()).scale(0.5),
+    axis: new math.Vec3(0,0,1)
+});
+
+var collision = new physics.Collision([box, box2, wall1, wall2, wall3, wall4]);
+
 // A spring which acts on box and pulls it to the box's starting position
 var spring = new physics.Spring(null, box, {
-    period: 2,
+    period: 10,
     dampingRatio: 0.4,
     anchor: math.Vec3.clone(box.position)
 });
@@ -74,8 +97,8 @@ var spring = new physics.Spring(null, box, {
 // A torsion spring which acts on box.
 // Like Spring, this can take an .anchor option, but when unspecified it will default to
 // an orientation representing no rotation, i.e. it will oppose any rotation in the box
-var rspring = new physics.RotationalSpring(null, box, {
-    period: 2,
+var rspring = new physics.RotationalSpring(null, [box,box2], {
+    period: 1,
     dampingRatio: 0.4
 });
 
@@ -86,7 +109,7 @@ var rdrag = new physics.RotationalDrag(box, {
 });
 
 // Notify the world to keep account for box and rdrag --we'll add the springs later
-world.add(box, rdrag);
+world.add(box, rdrag, box2, hinge, collision);
 
 // How instances of Box will appear
 // Instances will be passed in the model parameter, and we'll store a reference at this.box
@@ -123,7 +146,7 @@ BoxView.prototype.sync = function() {
 // We'll use a Point2Point constraint to drag the body around
 var p2p;
 BoxView.prototype.mousedown = function(e) {
-    world.remove(spring, rspring);
+    world.remove(spring);
     p2p = new physics.Point2Point(this.box, mouseghost, {
         anchor: math.Vec3.clone(mouseghost.position)
     });
