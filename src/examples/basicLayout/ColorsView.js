@@ -1,12 +1,8 @@
 var Size = require('famous-components').Size;
-var Position = require('famous-components').Position;
 
 function ColorsView(node, model) {
     this.size = new Size(node);
-    this.childrenComponents = [];
     this.model = model;
-
-    for (var i = 0; i < model.colors.length; i++) this.childrenComponents.push();
 }
 
 ColorsView.subscribe = {

@@ -1,14 +1,14 @@
 'use strict';
 
-var Clock = require('famous-core').Clock;
+var Context = require('famous-api').Context;
 var Box = require('../../fixtures/Box');
 var Scene = require('../../fixtures/Scene');
 var OriginSpinner = require('./OriginSpinner');
 
 var scene = new Scene();
 
-var columns = 50;
-var rows = 6;
+var columns = 5;
+var rows = 2;
 
 for (var r = 0; r < columns; r++) {
     for (var c = 0; c < rows; c++) {
@@ -18,6 +18,4 @@ for (var r = 0; r < columns; r++) {
     }
 }
 
-var famous = new Clock();
-
-famous.publish(scene, 'body');
+new Context(scene, 'body');

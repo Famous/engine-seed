@@ -3,11 +3,6 @@
 var Context = require('famous-api').Context;
 var BasicModel = require('./BasicModel');
 
-var myModel = new BasicModel({
-    content: 'Hello World',
-    borderRadius: 100,
-    backgroundColor: 'yellow'
-});
-
+var myModel = new BasicModel();
 
 new Context(myModel, 'body');

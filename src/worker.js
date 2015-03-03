@@ -1,4 +1,6 @@
-// require('./examples/helloWorld/index');
-// require('./examples/basicLayout/index');
-// require('./examples/origin/index');
-require('./examples/LightsGL/index');
+// module.exports = require('./examples/helloWorld/index');
+// module.exports = require('./examples/basicLayout/index');
+// module.exports = require('./examples/objExample/index');
+module.exports = require('./examples/eventing/index');
+// module.exports = require('./examples/twitter/index');
+// module.exports = require('./examples/origin/index');
