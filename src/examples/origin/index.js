@@ -7,8 +7,8 @@ var OriginSpinner = require('./OriginSpinner');
 
 var scene = new Scene();
 
-var columns = 50;
-var rows = 6;
+var columns = 5;
+var rows = 2;
 
 for (var r = 0; r < columns; r++) {
     for (var c = 0; c < rows; c++) {

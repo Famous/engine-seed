@@ -2,7 +2,6 @@ var Size = require('famous-components').Size;
 
 function ColorsView(node, model) {
     this.size = new Size(node);
-    this.childrenComponents = [];
     this.model = model;
 }
 
