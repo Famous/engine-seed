@@ -20,7 +20,7 @@ OBJLoader.load('obj/coke_bottle_v2.obj', function(buffers) {
 });
 
 var geometry = new DynamicGeometry();
-var uvMaterial = Material.normal()._compile();
+var uvMaterial = Material.normal();
 
 var OBJModel = {
 	geometry: geometry,
