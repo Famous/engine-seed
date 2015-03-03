@@ -51,7 +51,7 @@
     "famous-webgl-materials": "git+ssh://git@github.famo.us/platform/webgl-materials#master",
     "famous-handlers": "git+ssh://git@github.famo.us/platform/handlers#master",
     "famous-webgl-shaders": "git+ssh://git@github.famo.us/platform/webgl-shaders#master",
-    "famous-webgl-polyfills": "git+ssh://git@github.famo.us/platform/webgl-polyfills#master",
+    "famous-polyfills": "git+ssh://git@github.famo.us/platform/polyfills#master",
     "famous-api": "git+ssh://git@github.famo.us/platform/api#master"
   }
 }
