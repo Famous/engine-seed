@@ -1,9 +1,6 @@
 'use strict';
 
-var Clock = require('famous-core').Clock;
+var Context = require('famous-api').Context;
 var Colors = require('./Colors');
 
-var famous = new Clock();
-famous.publish(new Colors(), 'body');
-
-module.exports = famous;
+new Context(new Colors(), 'body');

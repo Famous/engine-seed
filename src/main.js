@@ -5,10 +5,7 @@ var Engine = require('famous-engine');
 require('famous-stylesheets');
 
 // Use Worker thread
-// var worker = new Worker('worker.bundle.js');
-
-// Use Main thread
-var worker = require('./worker.js');
+var worker = new Worker('worker.bundle.js');
 
 var compositor = new Compositor();
 

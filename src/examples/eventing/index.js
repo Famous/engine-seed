@@ -1,11 +1,8 @@
 'use strict';
 
-var Clock = require('famous-core').Clock;
+var Context = require('famous-api').Context;
 var BasicModel = require('./BasicModel');
 
 var myModel = new BasicModel();
 
-var famous = new Clock();
-famous.publish(myModel, 'body');
-
-module.exports = famous;
+new Context(myModel, 'body');

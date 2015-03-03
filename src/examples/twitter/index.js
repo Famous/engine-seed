@@ -1,7 +1,6 @@
 'use strict';
 
-var Clock = require('famous-core').Clock;
+var Context = require('famous-core').Context;
 var App = require('./App');
 
-var famous = new Clock();
-famous.publish(new App(), 'body');
+new Context(new App(), 'body');

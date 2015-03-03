@@ -1,6 +1,6 @@
 'use strict';
 
-var Clock = require('famous-core').Clock;
+var Context = require('famous-api').Context;
 
 var Scene = require('../../fixtures/Scene');
 var OBJLoader = require('famous-webgl-geometries').OBJLoader;
@@ -10,7 +10,6 @@ var Material = require('famous-webgl-materials').Material;
 var Box = require('famous-webgl-geometries').Box;
 
 var scene = new Scene();
-var famous = new Clock();
 
 OBJLoader.load('obj/coke_bottle_v2.obj', function(buffers) {
     geometry.setVertexPositions(buffers.vertices);
@@ -29,4 +28,4 @@ var OBJModel = {
 
 OBJModel.constructor.renderWith = OBJView;
 
-famous.publish(OBJModel, 'body');
+new Context(OBJModel, 'body');
