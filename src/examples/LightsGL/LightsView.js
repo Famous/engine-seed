@@ -1,35 +1,31 @@
 'use strict';
 
-var Origin = require('famous-components').Origin;
+/**
+ * Module dependencies
+ */
 var Position = require('famous-components').Position;
-var Align = require('famous-components').Align;
-var Size = require('famous-components').Size;
-var Mesh = require('famous-webgl-renderables').Mesh;
-var Geometry = require('famous-webgl-geometries').Box;
 var PointLight = require('famous-webgl-renderables').PointLight;
 
+
+/**
+ * Lights view containing the point light component.
+ * You can also add a mesh to the node, if you'd like for the
+ * light to be seen in the scene graph.
+ */
 function LightsView(node, model) {
     this.position = new Position(node);
-    this.size = new Size(node);
-    this.mesh = new Mesh(node);
-    this.align = new Align(node);
+
+    /**
+     * Create a point (light emits in all directions from the given point).
+     * You can move the light around and set its color (normalized RGB: e.g. (1, 1, 1) is white)
+     */
     this.pointLight = new PointLight(node);
     this.pointLight.setColor(1, 1, 1);
-
-    this.mesh.setGeometry(new Geometry());
-    this.mesh.baseColor([0.7, 0.3, 0.25]);
-
-    this.size.setAbsolute(10, 10, 10);
-    this.position.set(400, 300, 0);
+    this.position.set(300, 600, 500);
 }
 
-LightsView.subscribe = {
-    orbit: ['*']
-};
 
-LightsView.prototype.orbit = function() {
-    var delta = Date.now() * 0.0008;
-    // this.position.set(Math.cos(delta) * 300, Math.sin(delta) * 300, 0);
-};
-
+/**
+ * Expose
+ */
 module.exports = LightsView;
