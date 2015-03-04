@@ -2,12 +2,12 @@
   "name": "famous-seed",
   "version": "0.1.0",
   "description": "seed for a browserified version of famous",
-  "browser": "src/index.js",
+  "browser": "src/worker.js",
   "scripts": {
-    "build-main": "browserify src/main.js | uglifyjs > public/main.bundle.js",
-    "build-worker": "browserify src/worker.js | uglifyjs > public/main.bundle.js",
-    "watch-main": "watchify src/main.js -o public/main.bundle.js -d -v",
-    "watch-worker": "watchify src/worker.js -o public/worker.bundle.js -d -v",
+    "build-main": "browserify src/main.js -t [ babelify --playground --experimental ] | uglifyjs > public/main.bundle.js",
+    "build-worker": "browserify src/worker.js -t [ babelify --playground --experimental ]| uglifyjs > public/main.bundle.js",
+    "watch-main": "watchify src/main.js -o public/main.bundle.js -d -v -t [ babelify --playground --experimental ]",
+    "watch-worker": "watchify src/worker.js -o public/worker.bundle.js -d -v -t [ babelify --playground --experimental ]",
     "start": "npm run build && serve public/ -p 1337",
     "start-dev": "npm run watch & serve public/ -p 1337",
     "test": "npm run lint -s && npm run build",
@@ -18,6 +18,7 @@
     "lint": "npm run lint-eslint && npm run lint-jscs"
   },
   "devDependencies": {
+    "babelify": "^5.0.3",
     "browser-sync": "^2.0.0-rc10",
     "browserify": "^8.0.3",
     "eslint": "^0.12.0",
@@ -49,6 +50,8 @@
     "famous-webgl-geometries": "git+ssh://git@github.famo.us/platform/webgl-geometries#master",
     "famous-webgl-materials": "git+ssh://git@github.famo.us/platform/webgl-materials#master",
     "famous-handlers": "git+ssh://git@github.famo.us/platform/handlers#master",
-    "famous-webgl-shaders": "git+ssh://git@github.famo.us/platform/webgl-shaders#master"
+    "famous-webgl-shaders": "git+ssh://git@github.famo.us/platform/webgl-shaders#master",
+    "famous-polyfills": "git+ssh://git@github.famo.us/platform/polyfills#master",
+    "famous-api": "git+ssh://git@github.famo.us/platform/api#master"
   }
 }
