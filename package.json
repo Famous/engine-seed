@@ -5,7 +5,7 @@
   "browser": "src/index.js",
   "scripts": {
     "build-main": "browserify src/main.js | uglifyjs > public/main.bundle.js",
-    "build-worker": "browserify src/worker.js | uglifyjs > public/main.bundle.js",
+    "build-worker": "browserify src/worker.js | uglifyjs > public/worker.bundle.js",
     "watch-main": "watchify src/main.js -o public/main.bundle.js -d -v",
     "watch-worker": "watchify src/worker.js -o public/worker.bundle.js -d -v",
     "start": "npm run build && serve public/ -p 1337",

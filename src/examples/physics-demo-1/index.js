@@ -1,8 +1,12 @@
 'use strict';
 
+Object.observe = function() {};
+Array.observe = function() {};
+
 var Clock = require('famous-core').Clock;
 
 var UIEvents = require('famous-handlers').UIEvents;
+var Gestures = require('famous-handlers').Gestures;
 var HTMLElement = require('famous-dom-renderables').HTMLElement;
 var components = require('famous-components');
 var Position = components.Position;
@@ -10,152 +14,172 @@ var Rotation = components.Rotation;
 var Origin = components.Origin;
 var MountPoint = components.MountPoint;
 var Size = components.Size;
+var Scale = components.Scale;
 var Camera = components.Camera;
 
-var math = require('famous-math');
 var physics = require('famous-physics');
+var math = require('famous-math');
 
-var PhysicsEngine = physics.PhysicsEngine;
+var world = new physics.PhysicsEngine();
 
-var world = new PhysicsEngine({iterations: 2});
-// Tell famous how to render objects from the 'bodies' array of instances of PhysicsEngine
-PhysicsEngine.publish = 'bodies';
-PhysicsEngine.renderWith = WorldView;
+physics.PhysicsEngine.publish = 'bodies';
+physics.PhysicsEngine.renderWith = WorldView;
 
-// We need an HTMLElement to detect mouse events
-// Because we don't specify a size, the world view will expand to fill the size of the window,
-// so this is essentially our document and site of global events
-function WorldView(dispatch, model) {
-    this.el = new HTMLElement(dispatch);
+function WorldView(node, model) {
+    this.model = model;
+    // this.el = new HTMLElement(node);
 }
 
-// A particle we will use as a physical representation of the mouse
-// We won't add this to the world, so it won't be rendered
-var mouseghost = new physics.Particle({
-    mass: 1e8
-});
+WorldView.prototype.layout = function(c, p, i) {
+    c.setProportions(1,1 / this.model.bodies.length, 0);
+    var offset = c.getSize();
+    if (p) c.setPosition(offset[0]/2,p.getPosition()[1]+offset[1],0);
+    else c.setPosition(offset[0]/2,offset[1]/2,0);
+};
 
-WorldView.prototype.mousemove = function(e) {
-    mouseghost.setPosition(e.clientX, e.clientY, 0)
-}
+WorldView.prototype.step = function() {
+    // this.el.content(stringify(this.model))
+    var t = Date.now();
+    world.update(t);
 
-// See below
-WorldView.prototype.mouseup = function() {
-    world.add(spring);
-    world.remove(p2p);
-    p2p = null;
-}
+};
 
-WorldView.handlers = [UIEvents([
-    {name: 'mousemove', methods: ['preventDefault'], properties: ['clientX', 'clientY']},
-    'mouseup'])];
+WorldView.subscribe = {layout: ['*'], step: ['*']};
 
-// The world needs to be told to update, so let's do so every frame
-WorldView.prototype.tick = function() {
-    world.update(Date.now());
-}
-WorldView.subscribe = {tick : ['*']};
+var Box = physics.Box;
+Box.renderWith = BoxView;
 
-// Tell famous how to render instances of Box
-physics.Box.renderWith = BoxView;
-var box = new physics.Box({
-    size: [300,200,150],
-    mass: 10,
-    restrictions: ['z'],
-    position: new math.Vec3(300,300,0)
-});
-
-var box2 = new physics.Box({
-    size: [400,200,150],
-    mass: 10,
-    restrictions: ['z'],
-    position: new math.Vec3(800,500,0)
-});
-
-var wall1 = new physics.Wall({direction: physics.Wall.RIGHT});
-var wall2 = new physics.Wall({direction: physics.Wall.DOWN});
-var wall3 = new physics.Wall({direction: physics.Wall.LEFT});
-var wall4 = new physics.Wall({direction: physics.Wall.UP});
-
-wall3.setPosition(1400,0,0);
-wall4.setPosition(0,750,0);
-
-var hinge = new physics.Hinge(box, box2, {
-    anchor : math.Vec3.add(box.position, box2.position, new math.Vec3()).scale(0.5),
-    axis: new math.Vec3(0,0,1)
-});
-
-var collision = new physics.Collision([box, box2, wall1, wall2, wall3, wall4]);
-
-// A spring which acts on box and pulls it to the box's starting position
-var spring = new physics.Spring(null, box, {
-    period: 10,
-    dampingRatio: 0.4,
-    anchor: math.Vec3.clone(box.position)
-});
-
-// A torsion spring which acts on box.
-// Like Spring, this can take an .anchor option, but when unspecified it will default to
-// an orientation representing no rotation, i.e. it will oppose any rotation in the box
-var rspring = new physics.RotationalSpring(null, [box,box2], {
-    period: 1,
-    dampingRatio: 0.4
-});
-
-// By default, the world has no friction forces, so bodies will just keep moving and/or rotating
-// The RotationalDrag force will slow the rotation of its targets
-var rdrag = new physics.RotationalDrag(box, {
-    strength: 1
-});
-
-// Notify the world to keep account for box and rdrag --we'll add the springs later
-world.add(box, rdrag, box2, hinge, collision);
-
-// How instances of Box will appear
-// Instances will be passed in the model parameter, and we'll store a reference at this.box
 function BoxView(dispatch, model) {
-    this.box = model;
-    this.position = new Position(dispatch);
-    this.origin = new Origin(dispatch);
-    this.mp = new MountPoint(dispatch);
+    this.body = model;
+
+    this.elapsedscale = 0;
+    this.scaling = false;
+
+    this.scale = new Scale(dispatch);
     this.rotation = new Rotation(dispatch);
-    this.size = new Size(dispatch);
+    this.origin = new Origin(dispatch);
+    // this.size = new Size(dispatch);
+    this.mp = new MountPoint(dispatch);
+    this.position = new Position(dispatch);
 
     this.origin.set(0.5,0.5,0.5);
     this.mp.set(0.5,0.5,0.5);
-
-    var s = model.size;
-    this.size.setAbsolute(s[0],s[1],s[2]);
+    // this.size.setAbsolute(200,800,200)
 
     this.el = new HTMLElement(dispatch);
-    this.el.property('background', 'red');
     this.el.property('textAlign', 'center');
-    this.el.property('lineHeight', s[1]+'px');
+    this.el.property('background', 'black');
     this.el.property('color', 'white');
-    this.el.property('borderRadius', '10px');
-    this.el.property('box-shadow', '0px 0px 2px 2px red');
-    this.el.content('Upright');
 }
 
-// Every frame, lets pull out the position and orientation of the box and sync it with
-// the position and rotation components of the view
 BoxView.prototype.sync = function() {
-    world.getTransform(this.box, this.position, this.rotation);
+    world.getTransform(this.body, this.position, this.rotation);
 }
 
-// We'll use a Point2Point constraint to drag the body around
-var p2p;
-BoxView.prototype.mousedown = function(e) {
-    world.remove(spring);
-    p2p = new physics.Point2Point(this.box, mouseghost, {
-        anchor: math.Vec3.clone(mouseghost.position)
-    });
-    world.add(p2p);
+BoxView.subscribe = {sync: ['*']}
+
+var i = 0;
+BoxView.prototype.tap = function(e) {
+    var p = e.position;
+    // this.el.content(stringify(e));
+    this.el.property('zIndex', ++i + '');
+};
+
+var hz = 1000 / world.step;
+
+BoxView.prototype.rotate = function(e) {
+    this.el.content(stringify(e));
+    var r = this.rotation;
+    if (e.status === 'end') this.body.setAngularVelocity(0,0,e.rotationDelta * hz);
+    else this.body.setAngularVelocity(0,0,0);
+    var halftheta = e.rotationDelta*0.5;
+    var q = new math.Quaternion(Math.cos(halftheta),0,0,Math.sin(halftheta));
+    this.body.orientation.multiply(q)
+    this.el.content(stringify(e));
+};
+
+BoxView.prototype.pinch = function(e) {
+    if (e.status === 'move') {
+        this.elapsedscale += e.scaleDelta;
+    } else if (e.status === 'end') {
+        this.elapsedscale = 0;
+        this.scaling = false;
+    }
+    this.el.content(stringify(e));
+    var r = e.scale;
+    if (Math.abs(this.elapsedscale) > 0.55 || this.scaling) {
+        this.scaling = true;
+        this.scale.set(r,r,r)
+    }
+};
+
+var r = 117;
+var g = 65;
+var b = 153;
+
+BoxView.prototype.drag = function(e) {
+    if (e.status === 'start') {
+        world.remove(this.body.spring);
+        if (e.points === 2) world.remove(this.body.rspring);
+    }
+    else if (e.status === 'end') {
+        world.add(this.body.spring, this.body.rspring);
+    }
+    // this.el.content(stringify(e));
+    var d = e.centerDelta;
+    var p = this.position;
+    var x = p._x.state + d.x;
+    var y = p._y.state + d.y;
+    var z = p._z.state;
+    if (e.points === 1) {
+        this.el.property('background', 'rgb('+~~((r+x/10)%255)+','+~~((g+y/10)%255)+','+~~(g)+')')
+        // this.body.setVelocity(d.x * hz, d.y * hz, 0);
+    }
+    else {
+        var halftheta = d.x*0.005;
+        var q = new math.Quaternion(Math.cos(halftheta),0,Math.sin(halftheta),0);
+        // this.body.orientation.multiply(q)
+    }
+};
+
+function stringify(obj) {
+    var result = '';
+    if (typeof obj === 'string') return obj;
+    for (var key in obj) {
+        result += key + ': ' + JSON.stringify(obj[key]) +'<br>';
+    }
+    return result;
 }
 
-BoxView.subscribe = {sync: ['*']};
-BoxView.handlers= [UIEvents(['mousedown'])];
+BoxView.handlers = [Gestures(['rotate', 'tap', 'pinch', 'drag'])];
 
 var famous = new Clock();
+
+function boxes(n) {
+    var bodies = [];
+    var forces = [];
+    while (n--) {
+        var b = new Box({
+        mass: 1,
+        size: [100,100,100]
+        });
+
+        bodies.push(b);
+        var spring = new physics.Spring(null,b, {period:2.5, dampingRatio:0.3,anchor: new math.Vec3()});
+        var rspring = new physics.RotationalSpring(null,b, {period:3.5, dampingRatio:0.3});
+        forces.push(spring, rspring);
+
+        b.spring = spring;
+        b.rspring = rspring;
+    }
+
+    var rdrag = new physics.RotationalDrag(bodies, {strength: 3});
+    var drag = new physics.Drag(bodies, {strength: 3});
+
+    world.add(drag, rspring, forces, bodies);
+}
+
+boxes(1);
+
 
 famous.publish(world, 'body');
