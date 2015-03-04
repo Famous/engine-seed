@@ -1,53 +1,6 @@
-import {Clock, Node, RenderProxy} from 'famous-core';
+import {Context} from 'famous-core';
 import {Size, Align, MountPoint} from 'famous-components';
 import {HTMLElement} from 'famous-dom-renderables';
-
-var GLOBAL_DISPATCH = Clock.dispatch;
-
-class Root {
-
-    constructor (selector) {
-        this.proxy = new RenderProxy(this);
-        this.node = new Node(this.proxy, GLOBAL_DISPATCH);
-        this.selector = selector;
-        this.dirty = true;
-        this.dirtyQueue = [];
-        GLOBAL_DISPATCH.message('NEED_SIZE_FOR').message(selector);
-        GLOBAL_DISPATCH.targetedOn(selector, 'resize', this._receiveContextSize.bind(this));
-        Clock.update(this);
-    }
-
-    addChild () {
-        return this.node.addChild();
-    }
-
-    update () {
-        this.node.update();
-    }
-
-    getRenderPath () {
-        return this.selector;
-    }
-
-    receive (command) {
-        if (this.dirty) this.dirtyQueue.push(command);
-        else GLOBAL_DISPATCH.message(command);
-        return this;
-    }
-
-    _receiveContextSize (sizeReport) {
-        this.node
-            .getDispatch()
-            .getContext()
-            .setAbsolute(sizeReport.size[0], sizeReport.size[1], 0);
-        if (this.dirty) {
-            this.dirty = false;
-            for (var i = 0, len = this.dirtyQueue.length ; i < len ; i++) this.receive(this.dirtyQueue.shift());
-        }
-    }
-
-}
-
 
 class MyEl {
 
@@ -68,5 +21,5 @@ class MyEl {
 
 }
 
-var root = new Root('body');
+var root = new Context('body');
 var el = new MyEl(root.addChild());
