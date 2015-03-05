@@ -3,7 +3,7 @@
 Object.observe = function() {};
 Array.observe = function() {};
 
-var Clock = require('famous-core').Clock;
+var Context = require('famous-api').Context;
 
 var UIEvents = require('famous-handlers').UIEvents;
 var Gestures = require('famous-handlers').Gestures;
@@ -153,7 +153,6 @@ function stringify(obj) {
 
 BoxView.handlers = [Gestures(['rotate', 'tap', 'pinch', 'drag'])];
 
-var famous = new Clock();
 
 function boxes(n) {
     var bodies = [];
@@ -181,5 +180,4 @@ function boxes(n) {
 
 boxes(1);
 
-
-famous.publish(world, 'body');
+var famous = new Context(world, 'body');
