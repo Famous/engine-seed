@@ -60,6 +60,8 @@ function BoxView(dispatch, model) {
     this.elapsedscale = 0;
     this.scaling = false;
 
+    this.spinning = false;
+
     this.scale = new Scale(dispatch);
     this.rotation = new Rotation(dispatch);
     this.origin = new Origin(dispatch);
@@ -69,9 +71,11 @@ function BoxView(dispatch, model) {
 
     this.el = new HTMLElement(dispatch);
     this.el.property('textAlign', 'center');
+    // this.el.property('lineHeight', '200px');
     this.el.property('background', 'black');
     this.el.property('color', 'white');
     this.el.property('zIndex', j + '');
+    this.el.content(j + '');
 }
 
 var r = ~~(256*Math.random());
@@ -79,8 +83,9 @@ var g = ~~(256*Math.random());
 var b = ~~(256*Math.random());
 
 BoxView.prototype.sync = function() {
-    // debugger;
-    world.getTransform(this.body, this.position, this.rotation);
+    // if (!this.spinning)
+        world.getTransform(this.body, this.position, this.rotation);
+    // else world.getTransform(this.body, this.position, null);
     var p = this.position;
     var x = p._x.state;
     var y = p._y.state;
@@ -97,57 +102,65 @@ BoxView.prototype.tap = function(e) {
 
 var hz = 1000 / world.step;
 
-BoxView.prototype.rotate = function(e) {
+BoxView.prototype.pinch = function(e) {
     // this.el.content(stringify(e));
     var r = this.rotation;
     if (e.status === 'end') this.body.setAngularVelocity(0,0,e.rotationDelta * hz);
     else this.body.setAngularVelocity(0,0,0);
     var halftheta = e.rotationDelta*0.5;
     var q = new math.Quaternion(Math.cos(halftheta),0,0,Math.sin(halftheta));
-    this.body.orientation.multiply(q)
-    // this.el.content(stringify(e));
+    this.body.orientation.multiply(q);
 };
 
-BoxView.prototype.pinch = function(e) {
+BoxView.prototype.rotate = function(e) {
+    // this.el.content(stringify(e));
     if (e.status === 'move') {
         this.elapsedscale += e.scaleDelta;
     } else if (e.status === 'end') {
         this.elapsedscale = 0;
         this.scaling = false;
     }
-    // this.el.content(stringify(e));
     var s = this.scale;
     var x = s._x.state;
     var y = s._y.state;
     var z = s._z.state;
-    var d = e.scaleDelta;
-    // if (Math.abs(this.elapsedscale) > 0.3 || this.scaling) {
-        this.scaling = true;
-        this.scale.set(x+d,y+d,z+d);
-    // }
+
+    var d = e.scaleDelta + 1;
+    this.scaling = true;
+    this.scale.set(x*d,y*d,z*d);
 };
 
 BoxView.prototype.drag = function(e) {
+    // this.el.content(stringify(e));
     if (e.status === 'start') {
-        world.remove(this.body.spring);
-        if (e.points === 2) world.remove(this.body.rspring);
+        this.body.position.z = 1000;
+        world.remove(this.body.spring, this.body.rspring);
     }
     else if (e.status === 'end') {
         if (e.current === 0) {
-            this.scale.set(1, 1, 1, {duration: 1500, curve: 'outElastic'});
+            this.spinning = true;
+            this.scale.set(1, 1, 1, {duration: 1500, curve: 'outBounce'});
+            // this.rotation.set(0, 0, 0, {duration: 1000, curve: 'outElastic'}, function() {
+            //     this.body.setOrientation(1,0,0,0);
+            //     this.body.setAngularVelocity(0,0,0);
+            //     this.spinning = false;
+            // }.bind(this));
             world.add(this.body.spring, this.body.rspring);
         }
     }
-    // this.el.content(stringify(e));
     var d = e.centerDelta;
-    // if (e.points === 1) {
-        this.body.setVelocity(d.x * hz, d.y * hz, 0);
-    // }
-    // else {
-        // var halftheta = d.x*0.005;
-        // var q = new math.Quaternion(Math.cos(halftheta),0,Math.sin(halftheta),0);
-        // this.body.orientation.multiply(q)
-    // }
+    if (e.points === 1) {
+        if (e.current === 0) this.body.setVelocity(d.x * hz, d.y * hz, 0);
+        this.body.position.x += d.x;
+        this.body.position.y += d.y;
+    }
+    else {
+        var x = d.x * 0.005;
+        var y = d.y * 0.005;
+        var q = new math.Quaternion(Math.cos(x),0,Math.sin(x),0);
+        var q1 = new math.Quaternion(Math.cos(y),-Math.sin(y),0,0);
+        this.body.orientation.multiply(q).multiply(q1);
+    }
 };
 
 function stringify(obj) {
@@ -178,14 +191,17 @@ function boxes(n) {
 
         b.spring = spring;
         b.rspring = rspring;
+
+
+        // b.setOrientation(4,20,-15,2);
     }
 
     var rdrag = new physics.RotationalDrag(bodies, {strength: 3});
     var drag = new physics.Drag(bodies, {strength: 3});
 
-    world.add(drag, rdrag, rspring, forces, bodies);
+    world.add(drag, rdrag, forces, bodies);
 }
 
-boxes(4);
+boxes(144);
 
 var famous = new Context(world, 'body');
