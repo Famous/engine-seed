@@ -1,6 +1,9 @@
-// require('./examples/helloWorld/index');
-// require('./examples/basicLayout/index');
-// require('./examples/physics-scroll/index');
-require('./examples/gestures-demo/index');
-// require('./examples/origin/index');
-// require('./examples/twitter/index');
+// require('./examples/gestures-demo/index');
+// module.exports = require('./examples/helloWorld/index');
+// module.exports = require('./examples/basicLayout/index');
+// module.exports = require('./examples/objExample/index');
+// module.exports = require('./examples/eventing/index');
+// module.exports = require('./examples/twitter/index');
+// module.exports = require('./examples/origin/index');
+// module.exports = require('./examples/LightsGL/index');
+module.exports = require('./examples/noapi/index');
