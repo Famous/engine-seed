@@ -202,6 +202,6 @@ function boxes(n) {
     world.add(drag, rdrag, forces, bodies);
 }
 
-boxes(144);
+boxes(4);
 
 var famous = new Context(world, 'body');
