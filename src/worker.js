@@ -5,4 +5,5 @@
 // module.exports = require('./examples/twitter/index');
 // module.exports = require('./examples/origin/index');
 // module.exports = require('./examples/LightsGL/index');
-module.exports = require('./examples/noapi/index');
+// module.exports = require('./examples/noapi/index');
+module.exports = require('./examples/noapi/layout');
