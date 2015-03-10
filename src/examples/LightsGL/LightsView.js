@@ -17,10 +17,12 @@ function LightsView(node, model) {
 
     /**
      * Create a point (light emits in all directions from the given point).
-     * You can move the light around and set its color (normalized RGB: e.g. (1, 1, 1) is white)
+     * You can move the light around and set its color with (rgb, hsl, hex, color, hsv):
+     * Example: setColor('red'), setColor('#ff0000'), setColor(255, 0, 0)
+     *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
     this.pointLight = new PointLight(node);
-    this.pointLight.setColor(1, 1, 1);
+    this.pointLight.setColor('white');
     this.position.set(300, 600, 500);
 }
 
