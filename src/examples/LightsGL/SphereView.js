@@ -9,7 +9,7 @@ var Position = require('famous-components').Position;
 var Align = require('famous-components').Align;
 var Size = require('famous-components').Size;
 var Mesh = require('famous-webgl-renderables').Mesh;
-var Geometry = require('famous-webgl-geometries').Icosahedron;
+var Geometry = require('famous-webgl-geometries').Sphere;
 
 
 /**
@@ -24,10 +24,12 @@ function SphereView(node, model) {
 
     /**
      * Set the geometry to any of the given primitives: e.g. we have the Icosahedron required in above
-     * Set its color (normalized RGB: e.g. (1, 1, 1) is white)
+     * Set its color with (rgb, hsl, hex, color, hsv):
+     * Example: setColor('red'), setColor('#ff0000'), setColor(255, 0, 0)
+     *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
-    this.mesh.setGeometry(new Geometry());
-    this.mesh.baseColor(0.1, 0.4, 0.7);
+    this.mesh.setGeometry(new Geometry({ detail: 100 }));
+    this.mesh.baseColor('#ff0000');
 
     this.align.set(0.5, 0.5, 0.5);
     var width = model.size[0];
