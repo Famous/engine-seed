@@ -1,157 +1,157 @@
 'use strict';
 
-Object.observe = function() {};
-Array.observe = function() {};
+var Context = require('famous-core').Context;
+var Famous = require('famous-core').Famous;
+var clock = Famous.getClock();
 
-var Context = require('famous-api').Context;
-
-var UIEvents = require('famous-components').UIEventHandler;
-var Gestures = require('famous-components').GestureHandler;
+var GestureHandler = require('famous-components').GestureHandler;
 var HTMLElement = require('famous-dom-renderables').HTMLElement;
 var components = require('famous-components');
 var Position = components.Position;
+var Align = components.Align;
 var Rotation = components.Rotation;
 var Origin = components.Origin;
-var MountPoint = components.MountPoint;
 var Size = components.Size;
 var Scale = components.Scale;
-var Camera = components.Camera;
 
 var physics = require('famous-physics');
 var math = require('famous-math');
 
 var world = new physics.PhysicsEngine();
 
-physics.PhysicsEngine.publish = 'bodies';
-physics.PhysicsEngine.renderWith = WorldView;
+function App(root) {
+    this.node = root;
+    this.views = [];
+    this.engine = world;
 
-function WorldView(node, model) {
-    this.model = model;
-    // this.el = new HTMLElement(node);
+    clock.update(this);
 }
 
-WorldView.prototype.layout = function(c, p, i) {
-    var sqrt = Math.sqrt(this.model.bodies.length);
+App.prototype.grid = function(n) {
+    var bodies = [];
+    var forces = [];
+
+    var sqrt = Math.sqrt(n);
     var p = 1 / sqrt;
-    c.setProportions(p, p, 0);
-    var offset = c.getSize();
-    if (i) {
-        c.setPosition((i%sqrt)*offset[0],~~(i/sqrt)*offset[1],0);
+    for(var i = 0; i < n; i++) {
+        var panel = new GridLayoutNode(this.node.addChild());
+        panel.size.setProportional(p,p,0);
+        panel.align.set((i % sqrt) * p, Math.floor(i / sqrt) * p,0);
+
+        var bView = new BoxView(panel.node.addChild(), {
+            mass: 1,
+            size: [100,100,100]
+        });
+
+        var b = bView.body;
+
+        bodies.push(b);
+        var spring = new physics.Spring(null,b, {period:1.5, dampingRatio:0.6,anchor: new math.Vec3()});
+        var rspring = new physics.RotationalSpring(null,b, {period:1.5, dampingRatio:0.6});
+        forces.push(spring, rspring);
+
+        b.spring = spring;
+        b.rspring = rspring;
     }
+
+    var rdrag = new physics.RotationalDrag(bodies, {strength: 3});
+    var drag = new physics.Drag(bodies, {strength: 3});
+
+    world.add(drag, rdrag, forces, bodies);
 };
 
-WorldView.prototype.step = function() {
-    // this.el.content(stringify(this.model))
-    var t = Date.now();
-    world.update(t);
-
+App.prototype.update = function(t) {
+    this.engine.update(t);
 };
 
-WorldView.subscribe = {layout: ['*'], step: ['*']};
-
-var Box = physics.Box;
-Box.renderWith = BoxView;
+function GridLayoutNode(node) {
+    this.node = node;
+    var dispatch = node.getDispatch();
+    this.align = new Align(dispatch);
+    this.size = new Size(dispatch);
+}
 
 var j = 0;
-function BoxView(dispatch, model) {
-    this.body = model;
+function BoxView(node, options) {
+    this.node = node;
+    var dispatch = node.getDispatch();
+    this.body = new physics.Box(options);
+
     this.j = ++j;
-
-    this.elapsedscale = 0;
-    this.scaling = false;
-
-    this.spinning = false;
 
     this.scale = new Scale(dispatch);
     this.rotation = new Rotation(dispatch);
     this.origin = new Origin(dispatch);
     this.position = new Position(dispatch);
 
-
     this.origin.set(0.5,0.5,0.5);
 
     this.el = new HTMLElement(dispatch);
-    this.gestures = new Gestures(dispatch, [
-        {event:'pinch', callback: this.pinch.bind(this)},
-        {event:'drag', callback: this.drag.bind(this)},
-        {event:'tap', callback: this.tap.bind(this), threshold: 300, points: 1},
-        {event:'rotate', callback: this.rotate.bind(this)}
-        ]);
     this.el.property('textAlign', 'center');
-    // this.el.property('lineHeight', '200px');
     this.el.property('background', 'black');
     this.el.property('color', 'white');
     this.el.property('zIndex', j + '');
     this.el.content(j + '');
+
+    this.gestures = new GestureHandler(dispatch, [
+        {event:'pinch', callback: pinch.bind(this)},
+        {event:'drag', callback: drag.bind(this)},
+        {event:'tap', callback: tap.bind(this), threshold: 300, points: 1},
+        {event:'rotate', callback: rotate.bind(this)}
+    ]);
+
+    clock.update(this);
 }
 
 var r = ~~(256*Math.random());
 var g = ~~(256*Math.random());
 var b = ~~(256*Math.random());
 
-BoxView.prototype.sync = function() {
-    // if (!this.spinning)
-        world.getTransform(this.body, this.position, this.rotation);
-    // else world.getTransform(this.body, this.position, null);
+BoxView.prototype.update = function() {
+    world.getTransform(this.body, this.position, this.rotation);
     var p = this.position;
     var x = p._x.state;
     var y = p._y.state;
     this.el.property('background', 'rgb('+~~((r*this.j+x/10)%255)+','+~~((g*this.j+y/10)%255)+','+~~(b*this.j)+')');
 }
 
-BoxView.subscribe = {sync: ['*']}
-
-BoxView.prototype.tap = function(e) {
+function tap(e) {
+    // this.el.content(stringify(e));
     var p = e.position;
-    this.el.content(stringify(e));
     this.el.property('zIndex', ++j + '');
-};
+}
 
 var hz = 1000 / world.step;
 
-BoxView.prototype.rotate = function(e) {
+function rotate(e) {
     // this.el.content(stringify(e));
-    var r = this.rotation;
-    if (e.status === 'end') this.body.setAngularVelocity(0,0,e.rotationDelta * hz);
-    else this.body.setAngularVelocity(0,0,0);
     var halftheta = e.rotationDelta*0.5;
+    if (e.status === 'end') this.body.setAngularVelocity(0,0,2 * halftheta * hz);
+    else this.body.setAngularVelocity(0,0,0);
     var q = new math.Quaternion(Math.cos(halftheta),0,0,Math.sin(halftheta));
     this.body.orientation.multiply(q);
-};
+}
 
-BoxView.prototype.pinch = function(e) {
-    if (e.status === 'move') {
-        this.elapsedscale += e.scaleDelta;
-    } else if (e.status === 'end') {
-        this.elapsedscale = 0;
-        this.scaling = false;
-    }
+function pinch(e) {
+    // this.el.content(stringify(e));
     var s = this.scale;
     var x = s._x.state;
     var y = s._y.state;
     var z = s._z.state;
 
     var d = e.scaleDelta + 1;
-    this.scaling = true;
-    // this.el.content(x+' '+y+' '+z+'<br>'+stringify(e));
     this.scale.set(x*d,y*d,z*d);
-};
+}
 
-BoxView.prototype.drag = function(e) {
-    this.el.content(stringify(e));
+function drag(e) {
+    // this.el.content(stringify(e));
     if (e.status === 'start') {
         this.body.position.z = 1000;
         world.remove(this.body.spring, this.body.rspring);
     }
     else if (e.status === 'end') {
         if (e.current === 0) {
-            this.spinning = true;
             this.scale.set(1, 1, 1, {duration: 1500, curve: 'outBounce'});
-            // this.rotation.set(0, 0, 0, {duration: 1000, curve: 'outElastic'}, function() {
-            //     this.body.setOrientation(1,0,0,0);
-            //     this.body.setAngularVelocity(0,0,0);
-            //     this.spinning = false;
-            // }.bind(this));
             world.add(this.body.spring, this.body.rspring);
         }
     }
@@ -168,7 +168,7 @@ BoxView.prototype.drag = function(e) {
         var q1 = new math.Quaternion(Math.cos(y),-Math.sin(y),0,0);
         this.body.orientation.multiply(q).multiply(q1);
     }
-};
+}
 
 function stringify(obj) {
     var result = '';
@@ -179,36 +179,7 @@ function stringify(obj) {
     return result;
 }
 
-// BoxView.handlers = [Gestures(['pinch'])];
+var root = new Context('body');
+var app = new App(root);
 
-
-function boxes(n) {
-    var bodies = [];
-    var forces = [];
-    while (n--) {
-        var b = new Box({
-        mass: 1,
-        size: [100,100,100]
-        });
-
-        bodies.push(b);
-        var spring = new physics.Spring(null,b, {period:1.5, dampingRatio:0.6,anchor: new math.Vec3()});
-        var rspring = new physics.RotationalSpring(null,b, {period:1.5, dampingRatio:0.6});
-        forces.push(spring, rspring);
-
-        b.spring = spring;
-        b.rspring = rspring;
-
-
-        // b.setOrientation(4,20,-15,2);
-    }
-
-    var rdrag = new physics.RotationalDrag(bodies, {strength: 3});
-    var drag = new physics.Drag(bodies, {strength: 3});
-
-    world.add(drag, rdrag, forces, bodies);
-}
-
-boxes(1);
-
-var famous = new Context(world, 'body');
+app.grid(4)
