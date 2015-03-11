@@ -21,3 +21,7 @@ class MyEl {
 
 var root = new Context('body');
 var el = new MyEl(root.addChild());
+
+
+var node = root.addChild();
+var dispatch = node.getDispatch();

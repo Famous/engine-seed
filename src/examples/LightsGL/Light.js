@@ -12,8 +12,9 @@ var PointLight = require('famous-webgl-renderables').PointLight;
  * You can also add a mesh to the node, if you'd like for the
  * light to be seen in the scene graph.
  */
-function LightsView(node, model) {
-    this.position = new Position(node);
+function Light(node) {
+    this.dispatch = node.getDispatch();
+    this.position = new Position(this.dispatch);
 
     /**
      * Create a point (light emits in all directions from the given point).
@@ -21,7 +22,7 @@ function LightsView(node, model) {
      * Example: setColor('red'), setColor('#ff0000'), setColor(255, 0, 0)
      *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
-    this.pointLight = new PointLight(node);
+    this.pointLight = new PointLight(this.dispatch);
     this.pointLight.setColor('white');
     this.position.set(300, 600, 500);
 }
@@ -30,4 +31,4 @@ function LightsView(node, model) {
 /**
  * Expose
  */
-module.exports = LightsView;
+module.exports = Light;
