@@ -5,8 +5,8 @@ Array.observe = function() {};
 
 var Context = require('famous-api').Context;
 
-var UIEvents = require('famous-handlers').UIEvents;
-var Gestures = require('famous-handlers').Gestures;
+var UIEvents = require('famous-components').UIEventHandler;
+var Gestures = require('famous-components').GestureHandler;
 var HTMLElement = require('famous-dom-renderables').HTMLElement;
 var components = require('famous-components');
 var Position = components.Position;
@@ -67,9 +67,16 @@ function BoxView(dispatch, model) {
     this.origin = new Origin(dispatch);
     this.position = new Position(dispatch);
 
+
     this.origin.set(0.5,0.5,0.5);
 
     this.el = new HTMLElement(dispatch);
+    this.gestures = new Gestures(dispatch, [
+        {event:'pinch', callback: this.pinch.bind(this)},
+        {event:'drag', callback: this.drag.bind(this)},
+        {event:'tap', callback: this.tap.bind(this), threshold: 300, points: 1},
+        {event:'rotate', callback: this.rotate.bind(this)}
+        ]);
     this.el.property('textAlign', 'center');
     // this.el.property('lineHeight', '200px');
     this.el.property('background', 'black');
@@ -96,13 +103,13 @@ BoxView.subscribe = {sync: ['*']}
 
 BoxView.prototype.tap = function(e) {
     var p = e.position;
-    // this.el.content(stringify(e));
+    this.el.content(stringify(e));
     this.el.property('zIndex', ++j + '');
 };
 
 var hz = 1000 / world.step;
 
-BoxView.prototype.pinch = function(e) {
+BoxView.prototype.rotate = function(e) {
     // this.el.content(stringify(e));
     var r = this.rotation;
     if (e.status === 'end') this.body.setAngularVelocity(0,0,e.rotationDelta * hz);
@@ -112,8 +119,7 @@ BoxView.prototype.pinch = function(e) {
     this.body.orientation.multiply(q);
 };
 
-BoxView.prototype.rotate = function(e) {
-    // this.el.content(stringify(e));
+BoxView.prototype.pinch = function(e) {
     if (e.status === 'move') {
         this.elapsedscale += e.scaleDelta;
     } else if (e.status === 'end') {
@@ -127,11 +133,12 @@ BoxView.prototype.rotate = function(e) {
 
     var d = e.scaleDelta + 1;
     this.scaling = true;
+    // this.el.content(x+' '+y+' '+z+'<br>'+stringify(e));
     this.scale.set(x*d,y*d,z*d);
 };
 
 BoxView.prototype.drag = function(e) {
-    // this.el.content(stringify(e));
+    this.el.content(stringify(e));
     if (e.status === 'start') {
         this.body.position.z = 1000;
         world.remove(this.body.spring, this.body.rspring);
@@ -172,7 +179,7 @@ function stringify(obj) {
     return result;
 }
 
-BoxView.handlers = [Gestures(['rotate', 'tap', 'pinch', 'drag'])];
+// BoxView.handlers = [Gestures(['pinch'])];
 
 
 function boxes(n) {
@@ -202,6 +209,6 @@ function boxes(n) {
     world.add(drag, rdrag, forces, bodies);
 }
 
-boxes(4);
+boxes(1);
 
 var famous = new Context(world, 'body');
