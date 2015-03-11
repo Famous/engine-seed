@@ -10,17 +10,19 @@ var Align = require('famous-components').Align;
 var Size = require('famous-components').Size;
 var Mesh = require('famous-webgl-renderables').Mesh;
 var Geometry = require('famous-webgl-geometries').Sphere;
-
+var Famous = require('famous-core').Famous;
+var Clock = Famous.getClock();
 
 /**
  * Sphere view constructing a basic WebGL mesh
  */
-function SphereView(node, model) {
-    this.position = new Position(node);
-    this.rotation = new Rotation(node);
-    this.align = new Align(node);
-    this.size = new Size(node);
-    this.mesh = new Mesh(node);
+function Sphere(node) {
+    this.dispatch = node.getDispatch();
+    this.position = new Position(this.dispatch);
+    this.rotation = new Rotation(this.dispatch);
+    this.align = new Align(this.dispatch);
+    this.size = new Size(this.dispatch);
+    this.mesh = new Mesh(this.dispatch);
 
     /**
      * Set the geometry to any of the given primitives: e.g. we have the Icosahedron required in above
@@ -32,25 +34,19 @@ function SphereView(node, model) {
     this.mesh.baseColor('#ff0000');
 
     this.align.set(0.5, 0.5, 0.5);
-    var width = model.size[0];
-    var height = model.size[1];
-    var depth = model.size[2];
-    this.size.setAbsolute(width, height, depth);
+    this.size.setAbsolute(400, 400, 400);
+
+    /**
+     * Call the update method on every 'tick'
+     */
+    Clock.update(this);
 }
-
-
-/**
- * Call the move method on every engine tick
- */
-SphereView.subscribe = {
-    move: ['*']
-};
 
 
 /**
  * Move the mesh around in the scene
  */
-SphereView.prototype.move = function() {
+Sphere.prototype.update = function() {
     var delta = Date.now() * 0.0003;
     this.rotation.setY(delta);
     this.position.setX(Math.sin(delta) * 900);
@@ -60,4 +56,4 @@ SphereView.prototype.move = function() {
 /**
  * Expose
  */
-module.exports = SphereView;
+module.exports = Sphere;
