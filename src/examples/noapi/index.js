@@ -1,9 +1,8 @@
-import {Context} from 'famous-core';
+import {Clock, Node, RenderProxy, Context} from 'famous-core';
 import {Size, Align, MountPoint} from 'famous-components';
 import {HTMLElement} from 'famous-dom-renderables';
 
 class MyEl {
-
     constructor (node) {
         this.node = node;
         var dispatch = node.getDispatch();
@@ -18,8 +17,9 @@ class MyEl {
 
         this.el.property('background-color', 'red');
     }
-
 }
 
 var root = new Context('body');
+
 var el = new MyEl(root.addChild());
+
