@@ -35,7 +35,7 @@ function GeometryView(node, model) {
     );
 
     this.mesh.setGeometry(model.geometry);
-    this.mesh.baseColor(model.material);
+    this.mesh.setBaseColor(model.material);
 }
 
 GeometryView.prototype.rotate = function rotate() {

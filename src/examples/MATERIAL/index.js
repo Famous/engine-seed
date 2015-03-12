@@ -10,4 +10,4 @@ var backdoor = require('./backdoor');
 var video = require('./video');
 
 var root = new Context('body');
-new video(root.addChild());
+new deformation(root.addChild());

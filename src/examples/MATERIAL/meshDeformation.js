@@ -15,7 +15,7 @@ var g = new DynamicGeometry();
 g.fromGeometry(new Sphere({ detail: 100 }));
 for(var displacement = []; displacement.length < g.getLength();) displacement.push(Math.random());
 g.setVertexBuffer('displacement', displacement, 1);
-var a = m.registerExpression('sun', { glsl:'normal * vec3(displacement);' });
+var a = m.registerExpression('sun', { glsl: 'normal * vec3(displacement);' });
 var x = m.sun(null, {attributes: {displacement: 1 }});
 
 function Ball(node) {
@@ -23,8 +23,8 @@ function Ball(node) {
 
     this.mesh = new Mesh(this.dispatch);
     this.mesh.setGeometry(g);
-    this.mesh.positionOffset(x);
-    this.mesh.baseColor(m.normal());
+    this.mesh.setPositionOffset(x);
+    this.mesh.setBaseColor(m.normal());
 
     this.size = new Size(this.dispatch);
     this.rotation = new Rotation(this.dispatch);

@@ -13,7 +13,7 @@ function LightView(node, model) {
 	this.mesh = new Mesh(node);
 	this.align = new Align(node);
 	this.mesh.setGeometry(new Geometry.Plane());
-	this.mesh.baseColor([1, 0, 0]);
+	this.mesh.setBaseColor([1, 0, 0]);
 
 	this.align.set(0.5, 0.5);
 	this.size.setAbsolute(100, 100, 100);

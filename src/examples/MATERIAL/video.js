@@ -19,7 +19,7 @@ function Ball(node) {
 
     this.mesh = new Mesh(this.dispatch);
     this.mesh.setGeometry(new Sphere);
-    this.mesh.baseColor(material.Texture(video));
+    this.mesh.setBaseColor(material.Texture('images/famous_logo.png'));
 
     this.size = new Size(this.dispatch);
     this.rotation = new Rotation(this.dispatch);
