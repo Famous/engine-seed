@@ -41,7 +41,7 @@ function BallView(node) {
     this.mesh = new Mesh(node.getDispatch());
     this.mesh.setGeometry(new Sphere({detail: 100}));
     
-    this.mesh.baseColor(backdoor);
+    this.mesh.setBaseColor(backdoor);
 
     this.size = new Size(node.getDispatch());
     this.size.setAbsolute(500, 500, 500);
