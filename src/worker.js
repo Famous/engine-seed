@@ -1,7 +1,7 @@
 // module.exports = require('./examples/gestures-demo/index');
-module.exports = require('./examples/textureSharing/index');
+// module.exports = require('./examples/textureSharing/index');
 // module.exports = require('./examples/helloWorld/index');
-// module.exports = require('./examples/MATERIAL/index');
+module.exports = require('./examples/MATERIAL/index');
 // module.exports = require('./examples/basicLayout/index');
 // module.exports = require('./examples/objExample/index');
 // module.exports = require('./examples/eventing/index');
