@@ -22,8 +22,9 @@ class PlaneView {
         this.align.set(options.align[0], options.align[1]);
         this.size.setProportional(options.proportions[0], options.proportions[1], null);
 
+        var textureMaterial = Material.image([], { texture: 'images/famous_logo.png' });
         this.mesh.setGeometry('Plane', {detail: 30});
-        this.mesh.setBaseColor(Material.image([], { image: TextureRegistry.get('myCustomTexture') }));
+        this.mesh.setBaseColor(textureMaterial);
     }
 }
 
