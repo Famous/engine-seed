@@ -27,6 +27,8 @@ for(var i = 0; i < vertexLength; i++) {
     displacement.push(Math.random());
 }
 
+
+
 /**
  * Insert the displacement values into the buffer
  */
@@ -50,7 +52,6 @@ Material.registerExpression('sunVertex', {
     glsl: 'sunDisplacement();',
     defines: shader
 });
-
 
 /**
  * Set the various variables' default values and types
@@ -124,7 +125,7 @@ class Sun {
     update() {
         var delta = Date.now() * 0.0003;
         this.rotation.setY(delta);
-        amplitude = (0.05 * Math.sin(frame * 0.25) + 0.5);
+        amplitude = (0.1 * Math.sin(frame * 0.25) + 0.7);
         sunVertex.setUniform('u_Amplitude', amplitude);
         frame += 0.1;
     }

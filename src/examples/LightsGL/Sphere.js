@@ -7,6 +7,8 @@ var Origin = require('famous-components').Origin;
 var Rotation = require('famous-components').Rotation;
 var Position = require('famous-components').Position;
 var Align = require('famous-components').Align;
+var Origin = require('famous-components').Origin;
+var MountPoint = require('famous-components').MountPoint;
 var Size = require('famous-components').Size;
 var Mesh = require('famous-webgl-renderables').Mesh;
 var Geometry = require('famous-webgl-geometries').Sphere;
@@ -21,6 +23,8 @@ function Sphere(node) {
     this.position = new Position(this.dispatch);
     this.rotation = new Rotation(this.dispatch);
     this.align = new Align(this.dispatch);
+    this.origin = new Origin(this.dispatch);
+    this.mountPoint = new MountPoint(this.dispatch);
     this.size = new Size(this.dispatch);
     this.mesh = new Mesh(this.dispatch);
 
@@ -32,8 +36,11 @@ function Sphere(node) {
      */
     this.mesh.setGeometry(new Geometry({ detail: 100 }));
     this.mesh.setBaseColor('#ff0000');
+    // this.mesh.setGlossiness(10);
 
     this.align.set(0.5, 0.5, 0.5);
+    this.mountPoint.set(0.5, 0.5, 0.5);
+    this.origin.set(0.5, 0.5, 0.5);
     this.size.setAbsolute(400, 400, 400);
 
     /**
@@ -49,7 +56,7 @@ function Sphere(node) {
 Sphere.prototype.update = function() {
     var delta = Date.now() * 0.0003;
     this.rotation.setY(delta);
-    this.position.setX(Math.sin(delta) * 900);
+    this.position.setX(Math.sin(delta) * 200);
 };
 
 
