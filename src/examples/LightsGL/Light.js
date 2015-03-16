@@ -24,7 +24,7 @@ function Light(node) {
      */
     this.pointLight = new PointLight(this.dispatch);
     this.pointLight.setColor('white');
-    this.position.set(1900, 600, 500);
+    this.position.set(500, 600, 500);
 }
 
 

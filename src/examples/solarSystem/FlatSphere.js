@@ -3,22 +3,18 @@
 /**
  * Module dependencies
  */
-var Origin = require('famous-components').Origin;
-var Rotation = require('famous-components').Rotation;
-var Position = require('famous-components').Position;
-var Align = require('famous-components').Align;
-var Origin = require('famous-components').Origin;
-var MountPoint = require('famous-components').MountPoint;
-var Size = require('famous-components').Size;
-var Mesh = require('famous-webgl-renderables').Mesh;
-var Geometry = require('famous-webgl-geometries').Sphere;
-var Famous = require('famous-core').Famous;
-var Clock = Famous.getClock();
+import {Context, Famous} from 'famous-core';
+import {Size, Position, Rotation, Origin, Align, MountPoint} from 'famous-components';
+import {Mesh, PointLight, AmbientLight} from 'famous-webgl-renderables';
+import {GeodesicSphere, DynamicGeometry} from 'famous-webgl-geometries';
+import {Material} from 'famous-webgl-materials';
+let Clock = Famous.getClock();
+
 
 /**
- * Sphere view constructing a basic WebGL mesh
+ * FlatSphere view constructing a basic WebGL mesh
  */
-function Sphere(node) {
+function FlatSphere(node) {
     this.dispatch = node.getDispatch();
     this.position = new Position(this.dispatch);
     this.rotation = new Rotation(this.dispatch);
@@ -29,18 +25,24 @@ function Sphere(node) {
     this.mesh = new Mesh(this.dispatch);
 
     /**
+     * Set Ambient light (a light that emits equally in the scene)
+     */
+    this.ambience = new AmbientLight(this.dispatch);
+    this.ambience.setColor('#444400');
+
+    /**
      * Set the geometry to any of the given primitives: e.g. we have the Icosahedron required in above
      * Set its color with (rgb, hsl, hex, color, hsv):
      * Example: setColor('red'), setColor('#ff0000'), setColor(255, 0, 0)
      *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
-    this.mesh.setGeometry(new Geometry({ detail: 100 }));
-    this.mesh.setBaseColor('#ff0000');
+    this.mesh.setGeometry(new GeodesicSphere());
+    this.mesh.setBaseColor('white');
 
     this.align.set(0.5, 0.5, 0.5);
     this.mountPoint.set(0.5, 0.5, 0.5);
     this.origin.set(0.5, 0.5, 0.5);
-    this.size.setAbsolute(400, 400, 400);
+    this.size.setAbsolute(100, 100, 100);
 
     /**
      * Call the update method on every 'tick'
@@ -50,16 +52,17 @@ function Sphere(node) {
 
 
 /**
- * Move the mesh around in the scene
+ * Orbint the mesh around the sun
  */
-Sphere.prototype.update = function() {
-    var delta = Date.now() * 0.0003;
+FlatSphere.prototype.update = function() {
+    var delta = Date.now() * 0.00009;
     this.rotation.setY(delta);
-    this.position.setX(Math.sin(delta) * 200);
+    this.position.setX(Math.cos(delta) * 450);
+    this.position.setY(Math.sin(delta) * 450);
 };
 
 
 /**
  * Expose
  */
-module.exports = Sphere;
+module.exports = FlatSphere;
