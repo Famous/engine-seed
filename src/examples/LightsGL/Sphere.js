@@ -36,6 +36,7 @@ function Sphere(node) {
      */
     this.mesh.setGeometry(new Geometry({ detail: 100 }));
     this.mesh.setBaseColor('#ff0000');
+    // this.mesh.setGlossiness(10);
 
     this.align.set(0.5, 0.5, 0.5);
     this.mountPoint.set(0.5, 0.5, 0.5);
@@ -54,8 +55,6 @@ function Sphere(node) {
  */
 Sphere.prototype.update = function() {
     var delta = Date.now() * 0.0003;
-    this.rotation.setY(delta);
-    this.position.setX(Math.sin(delta) * 200);
 };
 
 

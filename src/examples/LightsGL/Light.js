@@ -5,6 +5,14 @@
  */
 var Position = require('famous-components').Position;
 var PointLight = require('famous-webgl-renderables').PointLight;
+var Align = require('famous-components').Align;
+var Origin = require('famous-components').Origin;
+var MountPoint = require('famous-components').MountPoint;
+var Size = require('famous-components').Size;
+var Mesh = require('famous-webgl-renderables').Mesh;
+var Geometry = require('famous-webgl-geometries').Sphere;
+var Famous = require('famous-core').Famous;
+var Clock = Famous.getClock();
 
 
 /**
@@ -15,6 +23,21 @@ var PointLight = require('famous-webgl-renderables').PointLight;
 function Light(node) {
     this.dispatch = node.getDispatch();
     this.position = new Position(this.dispatch);
+    this.align = new Align(this.dispatch);
+    this.origin = new Origin(this.dispatch);
+    this.mountPoint = new MountPoint(this.dispatch);
+    this.size = new Size(this.dispatch);
+    this.mesh = new Mesh(this.dispatch);
+    this.mesh.setGeometry(new Geometry({ detail: 100 }));
+
+    /**
+     * Place a mesh where the light source is so that you can see
+     * the light source. FlatShading is set to true, so that the mesh
+     * is not affected by the light in the scene.
+     */
+    this.mesh.setFlatShading(true);
+    this.mesh.setBaseColor('blue');
+    this.size.setAbsolute(50, 50, 50);
 
     /**
      * Create a point (light emits in all directions from the given point).
@@ -24,8 +47,23 @@ function Light(node) {
      */
     this.pointLight = new PointLight(this.dispatch);
     this.pointLight.setColor('white');
-    this.position.set(500, 600, 500);
+
+    this.align.set(0.5, 0.5, 0.5);
+    this.mountPoint.set(0.5, 0.5, 0.5);
+    this.origin.set(0.5, 0.5, 0.5);
+
+    Clock.update(this);
 }
+
+/**
+ * Move the light around in the scene
+ */
+Light.prototype.update = function() {
+    var delta = Date.now() * 0.0005;
+    this.position.setX(Math.cos(delta) * 500);
+    this.position.setZ(Math.sin(delta) * 500);
+};
+
 
 
 /**
