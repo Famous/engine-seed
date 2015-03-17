@@ -3,7 +3,7 @@
 //translucent within translucent
 
 var Mesh = require('famous-webgl-renderables').Mesh;
-var Box = require('famous-webgl-geometries').Sphere;
+var Box = require('famous-webgl-geometries').Box
 var Context = require('famous-api').Context;
 
 var Size = require('famous-components').Size;
@@ -20,7 +20,7 @@ function Ball(node) {
 
     var outside = new makeLife(node);
     outside.size.setAbsolute(innerHeight, innerHeight, innerHeight);
-    outside.position.set(0,0,0);
+    outside.position.set(0, 0, 0);
     outside.opacity.set(.7);
 };
 
