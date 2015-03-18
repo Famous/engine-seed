@@ -56,25 +56,34 @@ function Light(node, color, direction) {
     this.mountPoint.set(0.5, 0.5, 0.5);
     this.origin.set(0.5, 0.5, 0.5);
 
+    /**
+     * Determine the various movements based on the directions input
+     */
+    this.update = (this.direction === 'horizontal') ? horizontal.bind(this) : vertical.bind(this);
+
+    /**
+     * Call update on every engine tick
+     */
     Clock.update(this);
 }
 
 /**
- * Move the light around in the scene
+ * Spin the light horizontally
  */
-Light.prototype.update = function() {
+function horizontal() {
     var delta = Date.now() * this.tempo;
+    this.position.setX(Math.cos(delta) * this.radius);
     this.position.setZ(Math.sin(delta) * this.radius);
-
-    if (this.direction === 'horizontal') {
-        this.position.setX(Math.cos(delta) * this.radius);
-    }
-    else {
-        this.position.setY(Math.cos(delta) * this.radius);
-    }
 };
 
-
+/**
+ * Spin the light vertically
+ */
+function vertical() {
+    var delta = Date.now() * this.tempo;
+    this.position.setY(Math.cos(delta) * this.radius);
+    this.position.setZ(Math.sin(delta) * this.radius);
+};
 
 /**
  * Expose
