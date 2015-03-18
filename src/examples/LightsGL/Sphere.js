@@ -35,8 +35,7 @@ function Sphere(node) {
      *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
     this.mesh.setGeometry(new Geometry({ detail: 100 }));
-    this.mesh.setBaseColor('#ff0000');
-    // this.mesh.setGlossiness(10);
+    this.mesh.setBaseColor('#ddd');
 
     this.align.set(0.5, 0.5, 0.5);
     this.mountPoint.set(0.5, 0.5, 0.5);
