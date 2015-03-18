@@ -13,6 +13,15 @@ var Light = require('./Light');
  * It's better to add a single scene into the main root (e.g. body)
  */
 var root = new Context('body');
-var sphere = new Sphere(root.addChild());
-var light = new Light(root.addChild());
+new Sphere(root.addChild());
+
+/**
+ * Add two lights (maximum of 4 lights, currently):
+ * One blue, spinning horizontally; One green, spinning vertically
+ */
+var colors = ['blue', 'green'];
+var direction = ['horizontal', 'vertical'];
+for(var i = 0; i < 2; i++) {
+    new Light(root.addChild(), colors[i], direction[i]);
+}
 
