@@ -30,7 +30,7 @@ function Light(node, color, direction) {
     this.mesh = new Mesh(this.dispatch);
     this.mesh.setGeometry(new Geometry({ detail: 100 }));
     this.direction = direction;
-    this.tempo = Math.random() * 0.0005;
+    this.tempo = Math.random() * 0.001;
     this.radius = 500;
     this.color = color || '#ff0';
 
