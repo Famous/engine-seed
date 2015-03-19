@@ -5,6 +5,7 @@
  */
 var Context = require('famous-core').Context;
 var Sphere = require('./Sphere');
+var Plane = require('./Plane');
 var Light = require('./Light');
 
 
@@ -14,6 +15,7 @@ var Light = require('./Light');
  */
 var root = new Context('body');
 new Sphere(root.addChild());
+new Plane(root.addChild());
 
 /**
  * Add two lights (maximum of 4 lights, currently):

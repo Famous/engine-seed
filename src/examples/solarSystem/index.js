@@ -6,6 +6,7 @@
 var Context = require('famous-core').Context;
 var FlatSphere = require('./FlatSphere');
 var Sun = require('./Sun');
+var Plane = require('./Plane');
 
 
 /**
@@ -13,6 +14,7 @@ var Sun = require('./Sun');
  * It's better to add a single scene into the main root (e.g. body)
  */
 var root = new Context('body');
-var sphere = new FlatSphere(root.addChild());
-var flatSphere = new Sun(root.addChild());
+new FlatSphere(root.addChild());
+new Sun(root.addChild());
+new Plane(root.addChild());
 
