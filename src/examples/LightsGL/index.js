@@ -21,9 +21,11 @@ new Plane(root.addChild());
  * Add two lights (maximum of 4 lights, currently):
  * One blue, spinning horizontally; One green, spinning vertically
  */
-var colors = ['blue', 'green'];
-var direction = ['horizontal', 'vertical'];
-for(var i = 0; i < 2; i++) {
-    new Light(root.addChild(), colors[i], direction[i]);
+var lights = [
+    {color: 'blue', direction: 'horizontal'},
+    {color: 'purple', direction: 'vertical'}
+];
+for(var i = 0; i < lights.length; i++) {
+    new Light(root.addChild(), lights[i].color, lights[i].direction);
 }
 
