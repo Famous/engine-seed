@@ -14,6 +14,7 @@ var Geometry = require('famous-webgl-geometries').Sphere;
 var Famous = require('famous-core').Famous;
 var Clock = Famous.getClock();
 
+var Vec3 = require('famous-math').Vec3;
 
 /**
  * Lights view containing the point light component.
@@ -30,7 +31,7 @@ function Light(node, color, direction) {
     this.mesh = new Mesh(this.dispatch);
     this.mesh.setGeometry(new Geometry({ detail: 100 }));
     this.direction = direction;
-    this.tempo = Math.random() * 0.001;
+    this.tempo = 5 + Math.random() * 10;
     this.radius = 500;
     this.color = color || '#ff0';
 
@@ -56,33 +57,20 @@ function Light(node, color, direction) {
     this.mountPoint.set(0.5, 0.5, 0.5);
     this.origin.set(0.5, 0.5, 0.5);
 
-    /**
-     * Determine the various movements based on the directions input
-     */
-    this.update = (this.direction === 'horizontal') ? horizontal.bind(this) : vertical.bind(this);
+    this.pos = new Vec3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+    this.r = new Vec3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+    this.pos.scale(this.radius)
 
-    /**
-     * Call update on every engine tick
-     */
     Clock.update(this);
 }
 
-/**
- * Spin the light horizontally
- */
-function horizontal() {
-    var delta = Date.now() * this.tempo;
-    this.position.setX(Math.cos(delta) * this.radius);
-    this.position.setZ(Math.sin(delta) * this.radius);
-};
+Light.prototype.update = function() {
+    var p = this.pos;
+    var dir = Vec3.cross(p, this.r, new Vec3());
+    dir.normalize().scale(this.tempo);
+    p.add(dir).normalize().scale(this.radius)
 
-/**
- * Spin the light vertically
- */
-function vertical() {
-    var delta = Date.now() * this.tempo;
-    this.position.setY(Math.cos(delta) * this.radius);
-    this.position.setZ(Math.sin(delta) * this.radius);
+    this.position.set(p.x,p.y,p.z);
 };
 
 /**

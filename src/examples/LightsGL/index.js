@@ -8,6 +8,8 @@ var Sphere = require('./Sphere');
 var Plane = require('./Plane');
 var Light = require('./Light');
 
+var ColorPalette = require('famous-utilities').ColorPalette;
+
 
 /**
  * Add the models to the body.
@@ -19,13 +21,11 @@ new Plane(root.addChild());
 
 /**
  * Add two lights (maximum of 4 lights, currently):
- * One blue, spinning horizontally; One green, spinning vertically
  */
-var lights = [
-    {color: 'blue', direction: 'horizontal'},
-    {color: 'purple', direction: 'vertical'}
-];
-for(var i = 0; i < lights.length; i++) {
-    new Light(root.addChild(), lights[i].color, lights[i].direction);
+var palette = new ColorPalette();
+palette.setRandomPalette();
+var colors = palette.getPalette();
+for(var i = 0; i < 4; i++) {
+    new Light(root.addChild(), colors[i]);
 }
 
