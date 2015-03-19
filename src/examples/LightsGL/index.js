@@ -25,7 +25,6 @@ new Backdrop(root.addChild());
  * color palette for each light
  */
 var palette = new ColorPalette();
-palette.setRandomPalette();
 var colors = palette.getPalette();
 for(var i = 0; i < 4; i++) {
     new Light(root.addChild(), colors[i]);
