@@ -5,7 +5,7 @@
  */
 var Context = require('famous-core').Context;
 var Sphere = require('./Sphere');
-var Plane = require('./Plane');
+var Backdrop = require('./Plane');
 var Light = require('./Light');
 
 var ColorPalette = require('famous-utilities').ColorPalette;
@@ -17,10 +17,12 @@ var ColorPalette = require('famous-utilities').ColorPalette;
  */
 var root = new Context('body');
 new Sphere(root.addChild());
-new Plane(root.addChild());
+new Backdrop(root.addChild());
 
 /**
- * Add two lights (maximum of 4 lights, currently):
+ * Add two lights (maximum of 4 lights, currently).
+ * Get a random set of complimentary colors from the
+ * color palette for each light
  */
 var palette = new ColorPalette();
 palette.setRandomPalette();

@@ -30,9 +30,12 @@ function Plane(node) {
      *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
     this.mesh.setGeometry(new Geometry());
-    this.mesh.setBaseColor('#222');
+    this.mesh.setBaseColor('#151515');
 
-    this.position.setZ(-800);
+    /**
+     * Push the plane back into the background
+     */
+    this.position.setZ(-700);
 }
 
 

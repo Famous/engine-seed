@@ -11,7 +11,7 @@ var Origin = require('famous-components').Origin;
 var MountPoint = require('famous-components').MountPoint;
 var Size = require('famous-components').Size;
 var Mesh = require('famous-webgl-renderables').Mesh;
-var Geometry = require('famous-webgl-geometries').Sphere;
+var Geometry = require('famous-webgl-geometries').GeodesicSphere;
 var Famous = require('famous-core').Famous;
 var Clock = Famous.getClock();
 
@@ -34,7 +34,7 @@ function Sphere(node) {
      * Example: setColor('red'), setColor('#ff0000'), setColor(255, 0, 0)
      *          setColor('hsl', 0, 100, 50), setColor('hex', '#ff0000'), setColor('rgb', 255, 0, 0), etc.
      */
-    this.mesh.setGeometry(new Geometry({ detail: 100 }));
+    this.mesh.setGeometry(new Geometry());
     this.mesh.setBaseColor('white');
 
     this.align.set(0.5, 0.5, 0.5);
@@ -53,7 +53,7 @@ function Sphere(node) {
  * Move the mesh around in the scene
  */
 Sphere.prototype.update = function() {
-    var delta = Date.now() * 0.0003;
+    this.position.setX(Math.sin(Date.now() * 0.0003) * 200);
 };
 
 
