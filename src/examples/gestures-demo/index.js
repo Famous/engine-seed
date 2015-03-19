@@ -35,26 +35,28 @@ App.prototype.grid = function(n) {
     var p = 1 / sqrt;
     for(var i = 0; i < n; i++) {
         var panel = new GridLayoutNode(this.node.addChild());
-        panel.size.setProportional(p,p,0);
+        panel.size.setProportional(p - 0.001,p - 0.001,0);
         panel.align.set((i % sqrt) * p, Math.floor(i / sqrt) * p,0);
 
         var bView = new BoxView(panel.node.addChild(), {
-            mass: 1,
-            size: [100,100,100]
+            mass: 10,
+            size: [100,200,300]
         });
 
         var b = bView.body;
 
         bodies.push(b);
         var spring = new physics.Spring(null,b, {period:1.5, dampingRatio:0.6,anchor: new math.Vec3()});
-        var rspring = new physics.RotationalSpring(null,b, {period:1.5, dampingRatio:0.6});
+        var rspring = new physics.RotationalSpring(null,b, {period:2, dampingRatio:0.5
+            // ,anchor: new math.Quaternion(Math.cos(Math.PI/4),0,0,Math.sin(Math.PI/4))
+        });
         forces.push(spring, rspring);
 
         b.spring = spring;
         b.rspring = rspring;
     }
 
-    var rdrag = new physics.RotationalDrag(bodies, {strength: 3});
+    var rdrag = new physics.RotationalDrag(bodies, {strength: 3e4});
     var drag = new physics.Drag(bodies, {strength: 3});
 
     world.add(drag, rdrag, forces, bodies);
@@ -108,7 +110,9 @@ var g = ~~(256*Math.random());
 var b = ~~(256*Math.random());
 
 BoxView.prototype.update = function() {
-    world.getTransform(this.body, this.position, this.rotation);
+    var t = world.getTransform(this.body);
+    this.position.set(t.position[0],t.position[1],t.position[2]);
+    this.rotation.set(t.rotation[0],t.rotation[1],t.rotation[2]);
     var p = this.position;
     var x = p._x.state;
     var y = p._y.state;
@@ -147,6 +151,7 @@ function drag(e) {
     // this.el.content(stringify(e));
     if (e.status === 'start') {
         this.body.position.z = 1000;
+        this.body.setVelocity(0,0,0);
         world.remove(this.body.spring, this.body.rspring);
     }
     else if (e.status === 'end') {
@@ -182,4 +187,4 @@ function stringify(obj) {
 var root = new Context('body');
 var app = new App(root);
 
-app.grid(4)
+app.grid(9)

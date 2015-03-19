@@ -10,4 +10,4 @@
 module.exports = require('./examples/LightsGL/index');
 // module.exports = require('./examples/solarSystem/index');
 // module.exports = require('./examples/noapi/index');
-// module.exports = require('./examples/noapi/layout');
+// module.exports = require('./examples/physics-scroll/index');
