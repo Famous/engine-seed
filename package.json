@@ -37,7 +37,7 @@
     "famous-engine": "git+ssh://git@github.famo.us/platform/engine#v0.1.0",
     "famous-layouts": "git+ssh://git@github.famo.us/platform/layouts#v0.1.0",
     "famous-math": "git+ssh://git@github.famo.us/platform/math#v0.1.0",
-    "famous-physics": "git+ssh://git@github.famo.us/platform/physics#v0.1.0",
+    "famous-physics": "git+ssh://git@github.famo.us/platform/physics#v0.2.0",
     "famous-renderers": "git+ssh://git@github.famo.us/platform/renderers#v0.1.0",
     "famous-dom-renderables": "git+ssh://git@github.famo.us/platform/dom-renderables#v0.1.0",
     "famous-stylesheets": "git+ssh://git@github.famo.us/platform/stylesheets#v0.1.0",
