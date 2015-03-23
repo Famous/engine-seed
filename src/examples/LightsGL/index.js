@@ -25,24 +25,24 @@ new Backdrop(root.addChild());
  */
 var colors = [];
 for(var i = 0; i < 4; i++) {
-    var color = Color.getRandomColor();
-    new Light(root.addChild(), color);
+    var r = Math.random() * 255;
+    var g = Math.random() * 255;
+    var b = Math.random() * 255;
+    var color = new Color(r, g, b);
     colors.push(color);
+    new Light(root.addChild(), color);
 }
 
 /**
  * Animate the light color every two seconds
  * to another set of random color values.
- * Color.getRandomColor returns a new Color instance with random values
- * but you can also use Color.getRandomRGB to return just a set of random
- * RGB values -- both will work here, but Color.getRandomColor allows
- * to reference the constructor and modify it, as we did above.
  */
 setInterval(function() {
     colors.forEach(function(color) {
-        var newColor = Color.getRandomRGB();
-        // var newColor = Color.getRandomColor();
-        color.changeTo(newColor, { duration: 1000 });
+        var r = Math.random() * 255;
+        var g = Math.random() * 255;
+        var b = Math.random() * 255;
+        color.changeTo(r, g, b, { duration: 1000 });
     });
 }, 2000);
 
