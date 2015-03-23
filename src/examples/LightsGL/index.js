@@ -4,11 +4,10 @@
  * Module dependencies
  */
 var Context = require('famous-core').Context;
+var Color = require('famous-utilities').Color;
 var Sphere = require('./Sphere');
 var Backdrop = require('./Plane');
 var Light = require('./Light');
-
-var ColorPalette = require('famous-utilities').ColorPalette;
 
 
 /**
@@ -21,12 +20,29 @@ new Backdrop(root.addChild());
 
 /**
  * Add two lights (maximum of 4 lights, currently).
- * Get a random set of complimentary colors from the
- * color palette for each light
+ * Get a random color and save the reference to the constructor
+ * to be able to change it later
  */
-var palette = new ColorPalette();
-var colors = palette.getPalette();
+var colors = [];
 for(var i = 0; i < 4; i++) {
-    new Light(root.addChild(), colors[i]);
+    var color = Color.getRandomColor();
+    new Light(root.addChild(), color);
+    colors.push(color);
 }
+
+/**
+ * Animate the light color every two seconds
+ * to another set of random color values.
+ * Color.getRandomColor returns a new Color instance with random values
+ * but you can also use Color.getRandomRGB to return just a set of random
+ * RGB values -- both will work here, but Color.getRandomColor allows
+ * to reference the constructor and modify it, as we did above.
+ */
+setInterval(function() {
+    colors.forEach(function(color) {
+        var newColor = Color.getRandomRGB();
+        // var newColor = Color.getRandomColor();
+        color.changeTo(newColor, { duration: 1000 });
+    });
+}, 2000);
 
