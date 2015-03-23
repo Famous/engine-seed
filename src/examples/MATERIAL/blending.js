@@ -3,7 +3,7 @@
 //translucent within translucent
 
 var Mesh = require('famous-webgl-renderables').Mesh;
-var Box = require('famous-webgl-geometries').Box
+var Box = require('famous-webgl-geometries').Box;
 var Context = require('famous-api').Context;
 
 var Size = require('famous-components').Size;
@@ -14,7 +14,7 @@ var Opacity = require('famous-components').Opacity;
 
 var material = require('famous-webgl-materials').Material;
 function Ball(node) {
-    for (var i=  0; i < 20; i++) {
+    for (var i=  0; i < 30; i++) {
         rotator(new makeLife(node).rotation);
     }
 
@@ -30,7 +30,7 @@ function makeLife (node) {
 
         this.mesh = new Mesh(this.dispatch);
         this.mesh.setGeometry(new Box);
-        this.mesh.setBaseColor(material.normal());
+        this.mesh.setBaseColor(material.normal('images/famous_logo.png'));
         this.mesh.setFlatShading(true);
 
         this.size = new Size(this.dispatch);
@@ -39,7 +39,7 @@ function makeLife (node) {
         this.rotation = new Rotation(this.dispatch);
 
         
-        this.opacity.set(Math.random() > .5 ? Math.random()  : 1);
+        this.opacity.set(.5);
         this.rotation.set(Math.random() , Math.random() , Math.random());
     
         this.size.setAbsolute(200, 200, 200);
