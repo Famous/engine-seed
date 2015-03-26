@@ -1,0 +1,79 @@
+.component__main {
+    max-width: 760px;
+}
+
+.component__heading {
+    padding: 1em 40px;
+    background-color: black;
+    color: white;
+}
+
+.component__main {
+    font-size: 0.9em;
+    line-height: 1.4em;
+}
+
+.component__name,
+.module__location {
+    font-size: 0.9em;
+    margin-bottom: 0;
+}
+
+.module__location {
+    font-style: italic;
+}
+
+.component__main {
+    padding: 1em 40px 8em 40px;
+}
+
+.instance-methods__heading,
+.static-functions__heading,
+.members__heading {
+    border-top: 1px solid #ccc;
+    margin-top: 2em;
+    padding-top: 0.6em;
+}
+
+.instance-method__heading,
+.static-function__heading,
+.member__heading {
+    margin-top: 2em;
+}
+
+.missing-constructor {
+    font-size: 1.2em;
+    padding-top: 1em;
+}
+
+.params__heading {
+    font-size: 1em;
+}
+
+.params__table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.params__table > thead > tr > th,
+.params__table > tbody > tr > td {
+    padding-left: 0;
+}
+
+.params__table > tbody > tr > td span p {
+    margin-bottom: 0;
+}
+
+.ctor__params__heading {
+    margin-top: 1.6em;
+}
+
+.copyright {
+    margin-top: 6em;
+}
+
+.promo-text {
+    font-size: 1.2em;
+    line-height: 1.4em;
+    margin-bottom: 2em;
+}
