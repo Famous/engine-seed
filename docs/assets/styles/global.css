@@ -1,0 +1,37 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+a,
+a:hover,
+a:visited,
+a:active,
+a:focus {
+  color: #0080e6;
+  text-decoration: none;
+}
+
+a[href="#"] {
+  color: #999;
+}
+
+code {
+  font-family: 'Source Code Pro', Consolas, monospace;
+  color: black;
+  background-color: #eee;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+  margin-bottom: 0.6em;
+}
