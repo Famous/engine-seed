@@ -17,14 +17,14 @@
     "lint": "npm run lint-eslint && npm run lint-jscs"
   },
   "devDependencies": {
-    "babelify": "^5.0.3",
+    "babelify": "^6.0.1",
     "browser-sync": "^2.0.0-rc10",
-    "browserify": "^8.0.3",
-    "eslint": "^0.12.0",
+    "browserify": "^9.0.7",
+    "eslint": "^0.18.0",
     "jscs": "^1.7.3",
     "serve": "^1.4.0",
     "uglify-js": "^2.4.15",
-    "watchify": "^2.1.0"
+    "watchify": "^3.1.0"
   },
   "author": "Famous",
   "license": "All rights reserved",
