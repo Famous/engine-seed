@@ -18,6 +18,7 @@
   },
   "browserify": {
     "transform": [
+      "cssify",
       "babelify"
     ]
   },
@@ -25,6 +26,7 @@
     "babelify": "^6.0.1",
     "browser-sync": "^2.0.0-rc10",
     "browserify": "^9.0.7",
+    "cssify": "^0.7.0",
     "eslint": "^0.18.0",
     "jscs": "^1.7.3",
     "serve": "^1.4.0",
