@@ -23,10 +23,7 @@
     ]
   },
   "devDependencies": {
-    "babelify": "^6.0.1",
     "browser-sync": "^2.0.0-rc10",
-    "browserify": "^9.0.7",
-    "cssify": "^0.7.0",
     "eslint": "^0.18.0",
     "jscs": "^1.7.3",
     "serve": "^1.4.0",
@@ -36,7 +33,10 @@
   "author": "Famous",
   "license": "All rights reserved",
   "dependencies": {
+    "babelify": "^6.0.1",
     "brfs": "^1.1.1",
+    "browserify": "^9.0.7",
+    "cssify": "^0.7.0",
     "famous": "git+ssh://git@github.famo.us/platform/famous#v0.1.0",
     "script-optimizer": "git+ssh://git@github.famo.us:build/script-optimizer.git"
   }
