@@ -7,7 +7,6 @@ var Engine = FamousPlatform.engine;
 var Context = FamousPlatform.core.Context;
 var HTMLElement = FamousPlatform.domRenderables.HTMLElement;
 var Famous = FamousPlatform.core.Famous;
-FamousPlatform.stylesheets;
 
 // Boilerplate
 var compositor = new Compositor();
