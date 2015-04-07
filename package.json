@@ -5,8 +5,8 @@
   "browser": "src/worker.js",
   "scripts": {
     "build-dist": "scriptopt build -m bundle --gzip && scriptopt build -m standalone --sm famous --gzip",
-    "build-main": "browserify src/main.js -t [ babelify --playground --experimental ] | uglifyjs > public/main.bundle.js",
-    "watch-main": "watchify src/main.js -o public/main.bundle.js -d -v -t [ babelify --playground --experimental ]",
+    "build-main": "browserify src/main.js | uglifyjs > public/main.bundle.js",
+    "watch-main": "watchify src/main.js -o public/main.bundle.js -d -v",
     "start": "npm run build && serve --compress public/ -p 1337",
     "start-dev": "npm run watch & serve public/ -p 1337",
     "test": "npm run lint -s && npm run build",
@@ -16,20 +16,27 @@
     "lint-jscs": "jscs src/",
     "lint": "npm run lint-eslint && npm run lint-jscs"
   },
+  "browserify": {
+    "transform": [
+      "cssify",
+      "babelify"
+    ]
+  },
   "devDependencies": {
-    "babelify": "^5.0.3",
     "browser-sync": "^2.0.0-rc10",
-    "browserify": "^8.0.3",
-    "eslint": "^0.12.0",
+    "eslint": "^0.18.0",
     "jscs": "^1.7.3",
     "serve": "^1.4.0",
     "uglify-js": "^2.4.15",
-    "watchify": "^2.1.0"
+    "watchify": "^3.1.0"
   },
   "author": "Famous",
   "license": "All rights reserved",
   "dependencies": {
+    "babelify": "^6.0.1",
     "brfs": "^1.1.1",
+    "browserify": "^9.0.7",
+    "cssify": "^0.7.0",
     "famous": "git+ssh://git@github.famo.us/platform/famous#v0.1.0",
     "script-optimizer": "git+ssh://git@github.famo.us:build/script-optimizer.git"
   }
