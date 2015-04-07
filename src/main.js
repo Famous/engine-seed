@@ -18,4 +18,4 @@ engine.update(threadmanger);
 var context = new Context();
 var root = context.addChild();
 var el = new HTMLElement(root.getDispatch());
-el.property('background', 'yellow')
+el.property('background', 'yellow');
