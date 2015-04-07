@@ -2,7 +2,7 @@
   "name": "famous-seed",
   "version": "0.1.0",
   "description": "seed for a browserified version of famous",
-  "browser": "src/worker.js",
+  "browser": "src/main.js",
   "scripts": {
     "build-dist": "scriptopt build -m bundle --gzip && scriptopt build -m standalone --sm famous --gzip",
     "build-main": "browserify src/main.js | uglifyjs > public/main.bundle.js",
