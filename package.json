@@ -1,6 +1,6 @@
 {
   "name": "famous-seed",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "seed for a browserified version of famous",
   "browser": "src/main.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "brfs": "^1.1.1",
     "browserify": "^9.0.7",
     "cssify": "^0.7.0",
-    "famous": "git+ssh://git@github.famo.us/platform/famous#v0.3.0",
+    "famous": "git+ssh://git@github.famo.us/platform/famous#v0.3.1",
     "script-optimizer": "git+ssh://git@github.famo.us:build/script-optimizer.git"
   }
 }
