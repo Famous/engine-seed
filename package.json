@@ -1,6 +1,6 @@
 {
   "name": "famous-seed",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "seed for a browserified version of famous",
   "browser": "src/main.js",
   "scripts": {
