@@ -37,7 +37,7 @@
     "brfs": "^1.1.1",
     "browserify": "^9.0.7",
     "cssify": "^0.7.0",
-    "famous": "git+ssh://git@github.famo.us/platform/famous#v0.4.3",
+    "famous": "git+ssh://git@github.famo.us/mike/famous-engine#master",
     "script-optimizer": "git+ssh://git@github.famo.us:build/script-optimizer.git"
   }
 }
