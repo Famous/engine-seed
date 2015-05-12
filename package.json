@@ -2,16 +2,13 @@
   "name": "famous-seed",
   "version": "0.4.2",
   "description": "seed for a browserified version of famous",
-  "browser": "src/main.js",
+  "browser": "src/index.js",
   "scripts": {
-    "build-dist": "scriptopt build -m bundle --gzip && scriptopt build -m standalone --sm famous --gzip",
-    "build-main": "browserify src/main.js | uglifyjs > public/main.bundle.js",
-    "watch-main": "watchify src/main.js -o public/main.bundle.js -d -v",
+    "build": "browserify src/index.js | uglifyjs > public/index.bundle.js",
+    "watch": "watchify src/index.js -o public/index.bundle.js -d -v",
     "start": "npm run build && serve --compress public/ -p 1337",
-    "start-dev": "npm run watch & serve public/ -p 1337",
+    "dev": "npm run watch & serve public/ -p 1337",
     "test": "npm run lint -s && npm run build",
-    "build": "npm run build-main",
-    "watch": "npm run watch-main",
     "lint-eslint": "eslint src/",
     "lint-jscs": "jscs src/",
     "lint": "npm run lint-eslint && npm run lint-jscs"
@@ -23,7 +20,7 @@
     ]
   },
   "devDependencies": {
-    "browser-sync": "^2.0.0-rc10",
+    "browserify": "^9.0.7",
     "eslint": "^0.18.0",
     "jscs": "^1.7.3",
     "serve": "^1.4.0",
@@ -35,9 +32,7 @@
   "dependencies": {
     "babelify": "^6.0.1",
     "brfs": "^1.1.1",
-    "browserify": "^9.0.7",
     "cssify": "^0.7.0",
-    "famous": "git+ssh://git@github.famo.us/mike/famous-engine#master",
-    "script-optimizer": "git+ssh://git@github.famo.us:build/script-optimizer.git"
+    "famous": "git+ssh://git@github.famo.us/mike/famous-engine#master"
   }
 }
