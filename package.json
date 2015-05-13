@@ -15,7 +15,6 @@
   },
   "browserify": {
     "transform": [
-      "cssify",
       "babelify"
     ]
   },
@@ -32,8 +31,6 @@
   "license": "All rights reserved",
   "dependencies": {
     "babelify": "^6.0.1",
-    "brfs": "^1.1.1",
-    "cssify": "^0.7.0",
-    "famous": "git+ssh://git@github.famo.us/mike/famous-engine#master"
+    "famous": "git+ssh://git@github.famo.us/Famous/mixed-mode#master"
   }
 }

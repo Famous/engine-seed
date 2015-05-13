@@ -6,7 +6,6 @@ var Engine = require('famous/engine/Engine');
 var Context = require('famous/core/Context');
 var DOMElement = require('famous/dom-renderables/DOMElement');
 var Famous = require('famous/core/Famous');
-require('famous/stylesheets');
 
 // Boilerplate
 var compositor = new Compositor();
