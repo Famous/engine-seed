@@ -1,19 +1,13 @@
 'use strict';
 
-var Compositor = require('famous/renderers/Compositor');
-var ThreadManager = require('famous/renderers/ThreadManager');
-var Engine = require('famous/engine/Engine');
-var Context = require('famous/core/Context');
 var DOMElement = require('famous/dom-renderables/DOMElement');
-var Famous = require('famous/core/Famous');
+var FamousEngine = require('famous/core/FamousEngine');
 
 // Boilerplate
-var compositor = new Compositor();
-var engine = new Engine();
-var threadManager = new ThreadManager(Famous.getChannel(), compositor, engine);
+FamousEngine.init()
 
 // App Code
-var context = Famous.createContext();
-var root = context.addChild();
+var scene = FamousEngine.createScene();
+var root = scene.addChild();
 var el = new DOMElement(root);
 el.setProperty('background', 'yellow');

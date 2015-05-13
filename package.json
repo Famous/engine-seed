@@ -31,6 +31,6 @@
   "license": "All rights reserved",
   "dependencies": {
     "babelify": "^6.0.1",
-    "famous": "git+ssh://git@github.famo.us/Famous/mixed-mode#master"
+    "famous": "git+ssh://git@github.com/Famous/mixed-mode#develop"
   }
 }
