@@ -4,7 +4,7 @@
   "description": "seed for a browserified version of famous",
   "browser": "src/index.js",
   "scripts": {
-    "build": "browserify src/index.js | uglifyjs > public/index.bundle.js",
+    "build": "browserify src/index.js -g uglifyify | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > public/index.bundle.js",
     "watch": "watchify src/index.js -o public/index.bundle.js -d -v",
     "start": "npm run build && serve --compress public/ -p 1337",
     "dev": "npm run watch & serve public/ -p 1337",
@@ -25,7 +25,8 @@
     "jscs": "^1.7.3",
     "serve": "^1.4.0",
     "uglify-js": "^2.4.15",
-    "watchify": "^3.1.0"
+    "watchify": "^3.1.0",
+    "uglifyify": "^3.0.1"
   },
   "author": "Famous",
   "license": "All rights reserved",
