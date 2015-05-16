@@ -4,7 +4,7 @@ var DOMElement = require('famous/dom-renderables/DOMElement');
 var FamousEngine = require('famous/core/FamousEngine');
 
 // Boilerplate
-FamousEngine.init()
+FamousEngine.init();
 
 // App Code
 var scene = FamousEngine.createScene();
