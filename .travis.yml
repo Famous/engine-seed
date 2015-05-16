@@ -8,5 +8,5 @@ notifications:
     - mike@famo.us
     - myles@famo.us
     - marianna@famo.us
- slack:
+  slack:
      secure: xy1hxUnULcBZxt3eGO8v/IUuIvvTUGZvMVaKeh/+gbutExlODJbav2i7tfzi71SynBCA483wTEh/RHX96hvhrS52kkJTXPq6b17pgGAbx549ouKD/8nzB0AW0THeLZY/dsWxS/T1MXtZMAabufv4Zh8+H5m6ZOo9DPNYsjD2URk=
