@@ -22,7 +22,7 @@ Please join us on the "famous-community" slack.
 Sign up --> http://slack.famous.org/
 Join the discussion --> https://famous-community.slack.com
 
-There is a bunch of learning material at --> http://learn-staging.famo.us/start.html
+There is a bunch of learning material at --> http://staging.famous.org/learn
 
 Some things might be out of date. 
 
