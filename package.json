@@ -9,9 +9,9 @@
     "start": "npm run build && serve --compress public/ -p 1337",
     "dev": "npm run watch & serve public/ -p 1337",
     "test": "npm run lint -s && npm run build",
-    "lint-jshint": "jshint --reporter node_modules/jshint-stylish/stylish.js src/",
     "lint-jscs": "jscs src/",
-    "lint": "npm run lint-jshint && npm run lint-jscs"
+    "lint-eslint": "eslint --ignore-path .gitignore src/",
+    "lint": "npm run lint-eslint && npm run lint-jscs"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,8 @@
   },
   "devDependencies": {
     "browserify": "^10.1.3",
+    "eslint": "^0.21.2",
     "jscs": "^1.7.3",
-    "jshint": "^2.7.0",
-    "jshint-stylish": "^1.0.2",
     "serve": "^1.4.0",
     "uglify-js": "^2.4.15",
     "uglifyify": "^3.0.1",
