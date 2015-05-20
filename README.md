@@ -19,10 +19,13 @@ you can build for production
 
 Please join us on the "famous-community" slack.
 
-Sign up --> http://slack.famous.org/
-Join the discussion --> https://famous-community.slack.com
+Sign up --> https://slack.famous.org/signup
+Join the discussion --> http://slack.famous.org/
 
 There is a bunch of learning material at --> http://staging.famous.org/learn
+
+There are api docs at -->
+http://staging.famous.org/docs
 
 Some things might be out of date. 
 
