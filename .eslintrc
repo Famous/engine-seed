@@ -16,7 +16,7 @@
     "no-multi-spaces": 0,
     "no-self-compare": 1,
     // Strict Mode
-    "strict": 1,
+    "strict": 0,
     // Variables
     "no-shadow": 0, //Too much noise from tests, might consider to enable it as a warning later
     "no-undefined": 0,
