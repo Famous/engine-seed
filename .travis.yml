@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- '0.10'
+- iojs
+sudo: false
+notifications:
+  email:
+  - mike@famo.us
+  - myles@famo.us
+  - marianna@famo.us
+  slack:
+    secure: Rgq1FnjX5fg8J4boBUgmhT+1kpUf7VFxroZ5WwqGN3zQIraqPq3g2wapJNHqZ0j8UXTvgrr79C2DF1BYdta5fV758yMGJ7ifSk8MF9HBVxoCpP1DC0RZ8MJclhreiZpLAFWZoOJanachPz8OSzJ1/8U2TCJsAR51+Id0mT95CGc=
