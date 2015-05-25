@@ -31,7 +31,8 @@ Run All Tests with ```npm test```
 
 Please join us on the "famous-community" slack.
 
-Sign up --> https://slack.famous.org/signup
+Sign up --> http://slack.famous.org/signup
+
 Join the discussion --> http://slack.famous.org/
 
 There is a bunch of learning material at --> http://famous.org/learn
