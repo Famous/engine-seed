@@ -36,7 +36,7 @@
     "watchify": "^3.1.0"
   },
   "author": "Famous",
-  "license": "All rights reserved",
+  "license": "MIT",
   "dependencies": {
     "babelify": "^6.0.1",
     "famous": "git://github.com/famous/engine"
