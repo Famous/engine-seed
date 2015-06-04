@@ -1,5 +1,6 @@
 dist
 public/*.bundle.js
+public/bundle.js
 node_modules
 *.log
 .DS_Store
