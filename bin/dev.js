@@ -12,31 +12,50 @@ var serveStatic = require('serve-static');
 
 var bIndex = browserify(path.resolve('./src/index.js'), watchify.args);
 var wIndex = watchify(bIndex);
-
-
-var updateIndex = function(bundle) {
-    var writeStream = fs.createWriteStream(path.resolve('./public/index.bundle.js'));
-    bundle.pipe(writeStream);
-}
-
-updateIndex(wIndex.bundle());
-
-wIndex.on('update', function (ids) {
-    updateIndex(wIndex.bundle());
-});
-
 var bWorker = browserify(path.resolve('./src/worker.js'), watchify.args);
 var wWorker = watchify(bWorker);
 
-var updateWorker = function(bundle) {
-    var writeStream = fs.createWriteStream(path.resolve('./public/worker.bundle.js'));
+var bytes, time;
+wIndex.on('bytes', function (b) { bytes = b });
+wIndex.on('time', function (t) { time = t });
+wWorker.on('bytes', function (b) { bytes = b });
+wWorker.on('time', function (t) { time = t });
+
+var update = function(bundle, filePath) {
+    var didError = false;
+    var writeStream = fs.createWriteStream(path.resolve(filePath));
+
+    bundle.on('error', function (err) {
+        console.error(String(err));
+        didError = true;
+        writeStream.end();
+    });
+
     bundle.pipe(writeStream);
+
+     writeStream.on('error', function (err) {
+        console.error(err);
+    });
+
+    writeStream.on('close', function () {
+        if (!didError) {
+            console.error(bytes + ' bytes written to ' + path.resolve(filePath)
+                + ' (' + (time / 1000).toFixed(2) + ' seconds)'
+            );
+        }
+    });
 }
 
-updateWorker(wWorker.bundle());
+update(wIndex.bundle(), './public/index.bundle.js');
+update(wWorker.bundle(), './public/worker.bundle.js');
+
+wIndex.on('update', function (ids) {
+    update(wIndex.bundle(), './public/index.bundle.js');
+});
+
 
 wWorker.on('update', function (ids) {
-    updateWorker(wWorker.bundle());
+    update(wWorker.bundle(), './public/worker.bundle.js');
 });
 
 var serve = serveStatic(path.normalize('./public/'));
