@@ -13,9 +13,33 @@ var serveStatic = require('serve-static');
 var b = browserify(path.resolve('./src/index.js'), watchify.args);
 var w = watchify(b);
 
+var bytes, time;
+w.on('bytes', function (b) { bytes = b });
+w.on('time', function (t) { time = t });
+
 var update = function(bundle) {
+    var didError = false;
     var writeStream = fs.createWriteStream(path.resolve('./public/bundle.js'));
+
+    bundle.on('error', function (err) {
+        console.error(String(err));
+        didError = true;
+        writeStream.end();
+    });
+
     bundle.pipe(writeStream);
+
+    writeStream.on('error', function (err) {
+        console.error(err);
+    });
+
+    writeStream.on('close', function () {
+        if (!didError) {
+            console.error(bytes + ' bytes written to ' + path.resolve('./public/bundle.js')
+                + ' (' + (time / 1000).toFixed(2) + ' seconds)'
+            );
+        }
+    });
 }
 
 update(w.bundle());
