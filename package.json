@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "browserify": "^10.1.3",
+    "chalk": "^1.0.0",
     "eslint": "^0.21.2",
     "finalhandler": "^0.3.6",
     "jscs": "^1.7.3",

@@ -9,6 +9,7 @@ var http = require('http');
 var fs = require('fs');
 var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
+var chalk = require('chalk');
 
 var bIndex = browserify(path.resolve('./src/index.js'), watchify.args);
 var wIndex = watchify(bIndex);
@@ -26,7 +27,7 @@ var update = function(bundle, filePath) {
     var writeStream = fs.createWriteStream(path.resolve(filePath));
 
     bundle.on('error', function (err) {
-        console.error(String(err));
+        console.error(String(chalk.red(err)));
         didError = true;
         writeStream.end();
     });
@@ -34,12 +35,12 @@ var update = function(bundle, filePath) {
     bundle.pipe(writeStream);
 
      writeStream.on('error', function (err) {
-        console.error(err);
+        console.error(chalk.red(err));
     });
 
     writeStream.on('close', function () {
         if (!didError) {
-            console.error(bytes + ' bytes written to ' + path.resolve(filePath)
+            console.error(chalk.cyan(bytes) + chalk.grey(' bytes written to ') + chalk.cyan(path.resolve(filePath))
                 + ' (' + (time / 1000).toFixed(2) + ' seconds)'
             );
         }
@@ -64,4 +65,4 @@ var server = http.createServer(function(req, res){
   serve(req, res, finalhandler(req, res))
 });
 
-server.listen(1618, function() {console.log('serving %s on port %d', path.resolve('./public/'), 1618);});
+server.listen(1618, function() {console.log(chalk.grey('serving ') + chalk.blue(path.resolve('./public/')) + chalk.grey(' on port ') + chalk.blue('1618'));});
