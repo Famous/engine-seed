@@ -7,7 +7,7 @@
     "build": "browserify src/index.js -g uglifyify | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > public/bundle.js",
     "watch": "watchify src/index.js -d -v -o public/bundle.js",
     "start": "npm run build && serve --compress public/ -p 1618",
-    "dev": "npm run watch & serve public/ -p 1618",
+    "dev": "./bin/dev.js",
     "test": "npm run lint -s && npm run build",
     "lint-jscs": "jscs src/",
     "lint-eslint": "eslint --ignore-path .gitignore src/",
@@ -24,9 +24,11 @@
   },
   "devDependencies": {
     "browserify": "^10.1.3",
+    "chalk": "^1.0.0",
     "eslint": "^0.21.2",
+    "finalhandler": "^0.3.6",
     "jscs": "^1.7.3",
-    "serve": "^1.4.0",
+    "serve-static": "^1.9.3",
     "uglify-js": "^2.4.15",
     "uglifyify": "^3.0.1",
     "watchify": "^3.1.0"
